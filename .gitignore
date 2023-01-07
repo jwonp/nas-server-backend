@@ -1,6 +1,6 @@
 /server_config/media
 /server_config/.env
 /db.sqlite3
-backup
-.venv
-.vscode
+/backup
+/.venv
+/vscode
