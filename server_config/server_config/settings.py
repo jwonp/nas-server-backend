@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-env = environ.Env(DEBUG=(bool,True))
+env = environ.Env(DEBUG=(bool,False))
 environ.Env.read_env(
     env_file = os.path.join(BASE_DIR,'.env')
 )
@@ -24,7 +24,7 @@ AUTH_DATA ={
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+# DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -116,8 +116,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
+LANGUAGE_CODE = 'ko-kr'
+ 
 TIME_ZONE = 'Asia/Seoul'
 USE_I18N = True
 USE_L10N = True
@@ -171,7 +171,7 @@ LOGIN_URL='/admin/login/'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3000']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3000','http://www.ikiningyou.com']
 CORS_ALLOW_HEADERS = list(default_headers) + ['Set-Cookie']
 CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:3000',
