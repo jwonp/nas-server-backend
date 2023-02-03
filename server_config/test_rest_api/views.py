@@ -1,4 +1,5 @@
 import json
+from django.http import JsonResponse
 import requests
 from django.conf import settings
 # from django.shortcuts import render
@@ -6,13 +7,15 @@ from django.conf import settings
 # Create your views here.
 # from django.shortcuts import render
 # from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from oauth2_provider.views.base import AuthorizationView
 from django.http.response import HttpResponse
+from django.views import View
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate,login as run_login, logout as run_logout
-from users.models import User
-from django.core.files.storage import FileSystemStorage
+from .functions import save_user,save_user_storage
 # from django.utils.encoding import uri_to_iri
 # from .models import Board
 # from .serializers import BoardSerializer
@@ -22,18 +25,11 @@ from django.core.files.storage import FileSystemStorage
 # def viewjson(request):
 #     return JsonResponse("REST API end point...", safe=False)
 
-@api_view(['GET'])
-def getStorageSize(request):
-    storage_size = {
-        'max':100,
-        'used':30
-    }
-    return Response(storage_size)
 
-@api_view(['GET'])
+@api_view(['POST'])
 def getFolders(request):
     print("getFolders")
-    folders = ["영화","애니","드라마"]
+    folders = []
     return Response(folders)
 
 
@@ -43,78 +39,107 @@ def getUser(request):
     print(request.user.username)
     return Response("res")
 
-
+@api_view(['POST'])
 def submitLogin(request):
-    if(request.method == 'POST'):
-        data = json.loads(request.body)
-        
-        username = data.get('user_id')
-        password = data.get('user_password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            print("success to login")
-            run_login(request,user)
-            return HttpResponse(status=200)
-        else:
-            print("fail to login")
-        return HttpResponse(status=401) 
-    return HttpResponse(status=404)
+    data = request.data
+    
+    username = data.get('user_id')
+    password = data.get('user_password')
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        print("success to login")
+        run_login(request,user)
+        return HttpResponse(status=200)
+    else:
+        print("fail to login")
+    return HttpResponse(status=401) 
     
 @api_view(['POST'])
 def register(request):
     data = request.data
-    user = User.objects.create_user(data.get('user_id'),data.get('user_email'),data.get('user_password'))
-    user.last_name = data.get('user_last_name')
-    user.first_name = data.get('user_first_name')
-    user.save()
-    return HttpResponse(status=200)
-@api_view(['POST'])
-def login(request):
-    code = request.data['code']
-    print(f"code:{code}")
-    url ='http://127.0.0.1:8000/users/o/token/'
-    data={
-            "client_id":settings.AUTH_DATA['CLIENT_ID'],
-            "client_secret":settings.AUTH_DATA['CLIENT_SECRET'],
-            "code":code,
-            "code_verifier":settings.AUTH_DATA['CODE_VERIFIER'],
-            "redirect_uri":"http://127.0.0.1:3000/",
-            "grant_type":"authorization_code" 
-        }
-    headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
-    
-    response = requests.post(url,data=data,headers=headers)
-    print(response.json())
-    access_token = response.json().get('access_token')
-    refresh_token = response.json().get('refresh_token')
-    result = {
-        'access_token':access_token,
-        'refresh_token':refresh_token
-    }
-    # print(f"response:{res_json}")
-    return Response(result)
+    username = data.get('user_id')
+    save_user(data)
+    is_done = save_user_storage(username)
+    print(is_done)
+    return HttpResponse(is_done,status=200)
 
-def logout(request):
-    if(request.method == 'POST'):
-        run_logout(request)
-        data = json.loads(request.body)
-        print(data.get('token'))
-        
-        url ='http://127.0.0.1:8000/users/o/revoke-token/'
-        revoke_data={
-            'token':data.get('token'),
-            'client_id':data.get('client_id')
-        }
+
+# @api_view(['POST'])
+# def login(request):
+class login(View):
+    # @method_decorator(csrf_exempt)
+    def post(self, request, *args, **kwargs):
+        # code = request.data['code']
+        code = json.loads(request.body).get('code')
+        print(f"code:{code}")
+        url ='http://127.0.0.1:8000/users/o/token/'
+        data={
+                "client_id":settings.AUTH_DATA['CLIENT_ID'],
+                "client_secret":settings.AUTH_DATA['CLIENT_SECRET'],
+                "code":code,
+                "code_verifier":settings.AUTH_DATA['CODE_VERIFIER'],
+                "redirect_uri":"http://127.0.0.1:3000/",
+                "grant_type":"authorization_code" 
+            }
         headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
-        response = requests.post(url,data=json.dumps(revoke_data),headers=headers)
-        # print(response.status_code)
-        return HttpResponse("")
+        
+        token_response = requests.post(url,data=data,headers=headers)
+        print(token_response.json())
+        access_token = token_response.json().get('access_token')
+        refresh_token = token_response.json().get('refresh_token')
+        result = {
+            'access_token':access_token,
+        }
+        print(result)
+        # headers={'Content-type':'application/json'}
+        response = JsonResponse(data=result)
+        response.set_cookie( key='refresh',value=refresh_token,httponly=True)
+        return response
+    # return Response(data=result,headers=headers)
+
+@api_view(['POST'])
+def logout(request):
+    run_logout(request)
+    data = request.data
+    print(data.get('token'))
+    
+    url ='http://127.0.0.1:8000/users/o/revoke-token/'
+    revoke_data={
+        'token':data.get('token'),
+        'client_id':settings.AUTH_DATA.get('CLIENT_ID')
+    }
+    headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
+    requests.post(url,data=json.dumps(revoke_data),headers=headers)
+    return Response("")
 
 @api_view(['GET'])
 def authorizationview(request):
     print(AuthorizationView.form_class.type())
     return HttpResponse("")
 
+@api_view(['GET'])
+def refresh_token(request):
+    refresh_token = request.COOKIES['refresh']
+    print(f'refresh_token : {refresh_token}')
+    url ='http://127.0.0.1:8000/users/o/token/'
+    data={
+        "grant_type":"refresh_token", 
+        "refresh_token":refresh_token,
+        "client_id":settings.AUTH_DATA['CLIENT_ID'],
+        "client_secret":settings.AUTH_DATA['CLIENT_SECRET']
+    }
+    headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
+    response = requests.post(url,data=data,headers=headers)
+    access_token = response.json().get('access_token')
+    refresh_token = response.json().get('refresh_token')
+
+    result = {
+    'access_token':access_token,
+    }
+    print(result)
+    response = Response(result)
+    response.set_cookie(key='refresh',value=refresh_token,httponly=True)
+    return response
 # @api_view(['GET'])
 # def index(request):
 #     api_urls={

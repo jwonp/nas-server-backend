@@ -2,7 +2,7 @@
 import os
 import environ
 from pathlib import Path
-
+from corsheaders.defaults import default_headers
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'oauth2_provider.middleware.OAuth2TokenMiddleware',
@@ -172,12 +172,14 @@ LOGIN_URL='/admin/login/'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3000']
+CORS_ALLOW_HEADERS = list(default_headers) + ['Set-Cookie']
 CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:3000',
 
 )
 SESSION_COOKIE_HTTPONLY = True
+# CSRF_COOKIE_HTTPONLY = True
 OAUTH2_PROVIDER = {
-    'ACCESS_TOKEN_EXPIRE_SECONDS': 60 * 10,
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 60 * 120,
     'SCOPES' : {'read': 'Read scope', 'write':'Write scope', 'groups':'Access to your groups'}
 }

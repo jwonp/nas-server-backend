@@ -1,7 +1,7 @@
 import oauth2_provider.views as oauth2_views
 from django.urls import path, include
 from django.conf import settings
-from .views import ApiEndpoint, Closedpoint, Validtoken,secret_page,Refreshtoken,upload_files
+from .views import ApiEndpoint, Closedpoint, Validtoken, add_folder,secret_page,upload_files,get_file_list_by_path,get_storage_size,delete_files,download_files
 
 # OAuth2 provider endpoints
 oauth2_endpoint_views = [
@@ -33,8 +33,14 @@ urlpatterns = [
     # because the app_name attribute is not set in the included module
     path('o/', include((oauth2_endpoint_views, 'oauth2_provider'), namespace="oauth2_provider")),
     path('uploadfiles/', upload_files.as_view()),
+    path('downloadfiles/', download_files.as_view()),
+    path('deletefiles/', delete_files.as_view()),
+    path('addfolder/', add_folder.as_view()),
+    path('getstoragesize/', get_storage_size.as_view()),
+    path('getfilelistbypath/<str:path>', get_file_list_by_path),
     path('validtoken/',Validtoken.as_view()),
-    path('refreshtoken/',Refreshtoken.as_view()),
+    # path('login/',login.as_view()),
+    # path('refreshtoken/',Refreshtoken.as_view()),
     path('api/hello/', ApiEndpoint.as_view()),  # an example resource endpoint
     path('api/test/', Closedpoint.as_view()),   
     path('secret/', secret_page, name='secret'),

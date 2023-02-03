@@ -6,9 +6,6 @@ class BoardSerializer(serializers.ModelSerializer):
         model = Board
         fields = '__all__'
 
-        
-
-        
 class UploadSerializer(serializers.Serializer):
     file_uploaded = serializers.FileField()
     class Meta:
