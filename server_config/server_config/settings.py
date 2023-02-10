@@ -26,7 +26,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://www.ikiningyou.com','http://api.ikiningyou.com']
 
 
 # Application definition
@@ -82,16 +82,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'server_config.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
@@ -156,8 +146,8 @@ DATABASES = {
         'ENGINE' : 'django.db.backends.mysql',
         'NAME' : 'django',
         'USER' : 'root',
-        'PASSWORD' : 'qwerty',
-        'HOST' : 'localhost',
+        'PASSWORD' : 'crazy_mar1ne',
+        'HOST' : 'nas-server-db.cptr4ji7iwpw.ap-northeast-2.rds.amazonaws.com',
         'PORT' : '3306'
     }
 }
@@ -169,12 +159,12 @@ AUTH_USER_MODEL='users.User'
 
 LOGIN_URL='/admin/login/'
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3000','http://www.ikiningyou.com']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3000','http://www.ikiningyou.com','http://api.ikiningyou.com']
 CORS_ALLOW_HEADERS = list(default_headers) + ['Set-Cookie']
 CORS_ORIGIN_WHITELIST = (
-    'http://127.0.0.1:3000',
+    'http://127.0.0.1:3000','http://www.ikiningyou.com','http://api.ikiningyou.com'
 
 )
 SESSION_COOKIE_HTTPONLY = True

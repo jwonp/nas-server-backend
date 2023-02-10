@@ -72,13 +72,13 @@ class login(View):
         # code = request.data['code']
         code = json.loads(request.body).get('code')
         print(f"code:{code}")
-        url ='http://127.0.0.1:8000/users/o/token/'
+        url ='http://api.ikiningyou.com/users/o/token/'
         data={
                 "client_id":settings.AUTH_DATA['CLIENT_ID'],
                 "client_secret":settings.AUTH_DATA['CLIENT_SECRET'],
                 "code":code,
                 "code_verifier":settings.AUTH_DATA['CODE_VERIFIER'],
-                "redirect_uri":"http://127.0.0.1:3000/",
+                "redirect_uri":"http://www.ikiningyou.com/",
                 "grant_type":"authorization_code" 
             }
         headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
@@ -103,7 +103,7 @@ def logout(request):
     data = request.data
     print(data.get('token'))
     
-    url ='http://127.0.0.1:8000/users/o/revoke-token/'
+    url ='http://api.ikiningyou.com/users/o/revoke-token/'
     revoke_data={
         'token':data.get('token'),
         'client_id':settings.AUTH_DATA.get('CLIENT_ID')
@@ -121,7 +121,7 @@ def authorizationview(request):
 def refresh_token(request):
     refresh_token = request.COOKIES['refresh']
     print(f'refresh_token : {refresh_token}')
-    url ='http://127.0.0.1:8000/users/o/token/'
+    url ='http://api.ikiningyou.com/users/o/token/'
     data={
         "grant_type":"refresh_token", 
         "refresh_token":refresh_token,

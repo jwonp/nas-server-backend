@@ -2,7 +2,7 @@ import random
 import string
 import base64
 import hashlib
-random.seed(2801)
+random.seed(9123)
 code_verifier = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(random.randint(43, 128)))
 code_verifier = base64.urlsafe_b64encode(code_verifier.encode('utf-8'))
 

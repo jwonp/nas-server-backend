@@ -44,7 +44,7 @@ class Refreshtoken(ProtectedResourceView):
 
         body = json.loads(request.body)
         refresh_token = body.get('refresh_token')
-        url ='http://127.0.0.1:8000/users/o/token/'
+        url ='http:/api.ikiningyou.com/users/o/token/'
         data={
             "grant_type":"refresh_token", 
             "refresh_token":refresh_token,
