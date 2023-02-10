@@ -83,9 +83,9 @@ class login(View):
                 "grant_type":"authorization_code" 
             }
         headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
-        return JsonResponse({'user':isAuthed})
+        # return JsonResponse({'user':isAuthed})
         token_response = requests.post(url,data=data,headers=headers)
-        print(token_response.json())
+        return JsonResponse(token_response.json())
         access_token = token_response.json().get('access_token')
         refresh_token = token_response.json().get('refresh_token')
         result = {
