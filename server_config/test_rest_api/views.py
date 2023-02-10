@@ -73,7 +73,7 @@ class login(View):
         isAuthed = request.user.is_authenticated
         code = json.loads(request.body).get('code')
         print(f"code:{code}")
-        url ='http://127.0.0.1/users/o/token/'
+        url ='http://api.ikiningyou.com/users/o/token/'
         data={
                 "client_id":settings.AUTH_DATA['CLIENT_ID'],
                 "client_secret":settings.AUTH_DATA['CLIENT_SECRET'],
