@@ -3,7 +3,7 @@ Description=uWSGI service
 After=syslog.target
 
 [Service]
-ExecStart=/home/ubuntu/venv/bin/uwsgi -i /srv/nas-ser>
+ExecStart=/home/ubuntu/venv/bin/uwsgi -i /srv/nas-server-backend/server_config/.config/uwsgi/server_config.ini
 
 Restart=always
 KillSignal=SIGQUIT
