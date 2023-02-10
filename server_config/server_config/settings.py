@@ -21,10 +21,10 @@ AUTH_DATA ={
 DATABASE_DATA = {
     "ENGINE":env('DB_ENGINE'),
     "NAME" : env('DB_NAME'),
-    'USER' : env('DB_USER'),
-    'PASSWORD' : env('DB_PASSWORD'),
-    'HOST' : env('DB_HOST'),
-    'PORT' : env('DB_PORT'),
+    "USER" : env('DB_USER'),
+    "PASSWORD" : env('DB_PASSWORD'),
+    "HOST" : env('DB_HOST'),
+    "PORT" : env('DB_PORT'),
 }
 
 # SECURITY WARNING: keep the secret key used in production secret!
