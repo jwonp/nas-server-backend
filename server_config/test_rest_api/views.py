@@ -70,6 +70,7 @@ class login(View):
     # @method_decorator(csrf_exempt)
     def post(self, request, *args, **kwargs):
         # code = request.data['code']
+        isAuthed = request.user.is_authenticated()
         code = json.loads(request.body).get('code')
         print(f"code:{code}")
         url ='http://api.ikiningyou.com/users/o/token/'
@@ -82,7 +83,7 @@ class login(View):
                 "grant_type":"authorization_code" 
             }
         headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
-        
+        return JsonResponse({'user':isAuthed})
         token_response = requests.post(url,data=data,headers=headers)
         print(token_response.json())
         access_token = token_response.json().get('access_token')
