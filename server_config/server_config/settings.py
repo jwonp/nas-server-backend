@@ -18,7 +18,14 @@ AUTH_DATA ={
     "CLIENT_SECRET" : env('CLIENT_SECRET'),
     "CODE_VERIFIER" : env('CODE_VERIFIER')
 }
-
+DATABASE_DATA = {
+    "ENGINE":env('DB_ENGINE'),
+    "NAME" : env('DB_NAME'),
+    'USER' : env('DB_USER'),
+    'PASSWORD' : env('DB_PASSWORD'),
+    'HOST' : env('DB_HOST'),
+    'PORT' : env('DB_PORT'),
+}
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
@@ -143,12 +150,12 @@ DATABASES = {
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
     'default' : {
-        'ENGINE' : 'django.db.backends.mysql',
-        'NAME' : 'django',
-        'USER' : 'root',
-        'PASSWORD' : 'crazy_mar1ne',
-        'HOST' : 'nas-server-db.cptr4ji7iwpw.ap-northeast-2.rds.amazonaws.com',
-        'PORT' : '3306'
+        'ENGINE' : DATABASE_DATA.get('ENGINE'),
+        'NAME' : DATABASE_DATA.get('NAME'),
+        'USER' : DATABASE_DATA.get('USER'),
+        'PASSWORD' : DATABASE_DATA.get('PASSWORD'),
+        'HOST' : DATABASE_DATA.get('HOST'),
+        'PORT' : DATABASE_DATA.get('PORT')
     }
 }
 

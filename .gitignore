@@ -1,7 +1,8 @@
 /server_config/media
-# /server_config/.env
+/server_config/.env
 /db.sqlite3
 backup
 .venv
 .vscode
 bug_fix.txt
+
