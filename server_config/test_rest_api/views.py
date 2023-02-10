@@ -70,7 +70,7 @@ class login(View):
     # @method_decorator(csrf_exempt)
     def post(self, request, *args, **kwargs):
         # code = request.data['code']
-        isAuthed = request.user.is_authenticated()
+        isAuthed = self.user.is_authenticated()
         code = json.loads(request.body).get('code')
         print(f"code:{code}")
         url ='http://api.ikiningyou.com/users/o/token/'
