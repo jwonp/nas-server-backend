@@ -155,7 +155,10 @@ DATABASES = {
         'USER' : DATABASE_DATA.get('USER'),
         'PASSWORD' : DATABASE_DATA.get('PASSWORD'),
         'HOST' : DATABASE_DATA.get('HOST'),
-        'PORT' : DATABASE_DATA.get('PORT')
+        'PORT' : DATABASE_DATA.get('PORT'),
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
     }
 }
 
