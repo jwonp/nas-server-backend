@@ -73,7 +73,7 @@ class login(View):
         isAuthed = request.user.is_authenticated
         code = json.loads(request.body).get('code')
         print(f"code:{code}")
-        url ='http://api.ikiningyou.com/users/o/token/'
+        url ='http://127.0.0.1/users/o/token/'
         data={
                 "client_id":settings.AUTH_DATA['CLIENT_ID'],
                 "client_secret":settings.AUTH_DATA['CLIENT_SECRET'],
@@ -85,7 +85,7 @@ class login(View):
         headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
         # return JsonResponse({'user':isAuthed})
         token_response = requests.post(url,data=data,headers=headers)
-        return JsonResponse({'status':token_response.status_code})
+        # return JsonResponse({'status':token_response.status_code})
         access_token = token_response.json().get('access_token')
         refresh_token = token_response.json().get('refresh_token')
         result = {
