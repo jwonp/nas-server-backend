@@ -33,7 +33,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','www.ikiningyou.com','api.ikiningyou.com']
+ALLOWED_HOSTS = ['127.0.0.1','localhost','52.78.16.47','www.ikiningyou.com','api.ikiningyou.com']
 
 
 # Application definition
@@ -171,10 +171,10 @@ LOGIN_URL='/admin/login/'
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3000','http://www.ikiningyou.com','http://api.ikiningyou.com']
+CSRF_TRUSTED_ORIGINS = ['http://52.78.16.47:8000','http://127.0.0.1:3000','http://www.ikiningyou.com','http://api.ikiningyou.com']
 CORS_ALLOW_HEADERS = list(default_headers) + ['Set-Cookie']
 CORS_ORIGIN_WHITELIST = (
-    'http://127.0.0.1:3000','http://www.ikiningyou.com','http://api.ikiningyou.com'
+    'http://52.78.16.47:8000','http://127.0.0.1:3000','http://www.ikiningyou.com','http://api.ikiningyou.com'
 
 )
 SESSION_COOKIE_HTTPONLY = True
