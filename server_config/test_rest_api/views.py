@@ -71,21 +71,21 @@ class login(View):
     def post(self, request, *args, **kwargs):
         # code = request.data['code']
 
-        # code = json.loads(request.body).get('code')
-        # print(f"code:{code}")
-        # url ='http://api.ikiningyou.com/users/o/token/'
-        # data={
-        #         "client_id":settings.AUTH_DATA['CLIENT_ID'],
-        #         "client_secret":settings.AUTH_DATA['CLIENT_SECRET'],
-        #         "code":code,
-        #         "code_verifier":settings.AUTH_DATA['CODE_VERIFIER'],
-        #         "redirect_uri":"http://www.ikiningyou.com/",
-        #         "grant_type":"authorization_code" 
-        #     }
-        # headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
-        # #return JsonResponse(data=data)
+        code = json.loads(request.body).get('code')
+        print(f"code:{code}")
+        url ='http://api.ikiningyou.com/users/o/token/'
+        data={
+                "client_id":settings.AUTH_DATA['CLIENT_ID'],
+                "client_secret":settings.AUTH_DATA['CLIENT_SECRET'],
+                "code":code,
+                "code_verifier":settings.AUTH_DATA['CODE_VERIFIER'],
+                "redirect_uri":"http://www.ikiningyou.com/",
+                "grant_type":"authorization_code" 
+            }
+        headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
+        #return JsonResponse(data=data)
         # token_response = requests.post(url,data=data,headers=headers)
-        response = requests.post('https://httpbin.org/post')
+        response = requests.get('http://api.ikiningyou.com/getuser/')
         # return HttpResponse(token_response.status_code)
         return JsonResponse(response.json())
         access_token = token_response.json().get('access_token')
