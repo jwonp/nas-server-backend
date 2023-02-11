@@ -2,7 +2,15 @@ import oauth2_provider.views as oauth2_views
 from django.urls import path, include
 from django.conf import settings
 from .views import ApiEndpoint, Closedpoint, Validtoken, add_folder,secret_page,upload_files,get_file_list_by_path,get_storage_size,delete_files,download_files
+from django.urls import path, include
 
+from auth.apis import (
+    LoginApi, 
+    LogoutApi, 
+    GoogleLoginApi, 
+    GoogleSigninCallBackApi
+)
+from auth.googleapi import *
 # OAuth2 provider endpoints
 oauth2_endpoint_views = [
     path('authorize/', oauth2_views.AuthorizationView.as_view(), name="authorize"),
@@ -26,12 +34,21 @@ if settings.DEBUG:
         path('authorized-tokens/<pk>/delete/', oauth2_views.AuthorizedTokenDeleteView.as_view(),
             name="authorized-token-delete"),
     ]
+login_patterns = [
+    path('google', GoogleLoginApi.as_view(), name='google_login'),
+    path('google/callback', GoogleSigninCallBackApi.as_view(), name='google_login_callback'),
+]
 
+urlpatterns = [
+  
+]
 urlpatterns = [
     # OAuth 2 endpoints:
     # need to pass in a tuple of the endpoints as well as the app's name
     # because the app_name attribute is not set in the included module
     path('o/', include((oauth2_endpoint_views, 'oauth2_provider'), namespace="oauth2_provider")),
+    path('logout', LogoutApi.as_view(), name="logout"),
+    path('login/', include(login_patterns)),
     path('uploadfiles/', upload_files.as_view()),
     path('downloadfiles/', download_files.as_view()),
     path('deletefiles/', delete_files.as_view()),
