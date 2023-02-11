@@ -171,10 +171,11 @@ LOGIN_URL='/admin/login/'
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = ['http://52.78.16.47:8000','http://127.0.0.1:3000','http://www.ikiningyou.com','http://api.ikiningyou.com']
+CSRF_TRUSTED_ORIGINS = ['http://52.78.16.47:8000','http://127.0.0.1:3000','http://www.ikiningyou.com','http://api.ikiningyou.com', 'https://52.78.16.47:8000','https://127.0.0.1:3000','https://www.ikiningyou.com','https://api.ikiningyou.com']
 CORS_ALLOW_HEADERS = list(default_headers) + ['Set-Cookie']
 CORS_ORIGIN_WHITELIST = (
-    'http://52.78.16.47:8000','http://127.0.0.1:3000','http://www.ikiningyou.com','http://api.ikiningyou.com'
+    'http://52.78.16.47:8000','http://127.0.0.1:3000','http://www.ikiningyou.com','http://api.ikiningyou.com',
+    'https://52.78.16.47:8000','https://127.0.0.1:3000','https://www.ikiningyou.com','https://api.ikiningyou.com'
 
 )
 SESSION_COOKIE_HTTPONLY = True
