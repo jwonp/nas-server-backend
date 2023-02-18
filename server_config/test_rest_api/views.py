@@ -72,7 +72,6 @@ class login(View):
         # code = request.data['code']
 
         code = json.loads(request.body).get('code')
-        return HttpResponse(code)
         print(f"code:{code}")
         url ='https://api.ikiningyou.com/users/o/token/'
         data={
@@ -84,7 +83,7 @@ class login(View):
                 "grant_type":"authorization_code" 
             }
         headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
-        #return JsonResponse(data=data)
+        return JsonResponse(data=data)
         token_response = requests.post(url,data=data,headers=headers)
         # response = requests.get('https://api.ikiningyou.com/getuser/')
         # return HttpResponse(token_response.status_code)
