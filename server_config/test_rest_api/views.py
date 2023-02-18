@@ -72,6 +72,7 @@ class login(View):
         # code = request.data['code']
 
         code = json.loads(request.body).get('code')
+        return HttpResponse(code)
         print(f"code:{code}")
         url ='https://api.ikiningyou.com/users/o/token/'
         data={

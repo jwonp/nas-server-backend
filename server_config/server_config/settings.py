@@ -27,6 +27,8 @@ DATABASE_DATA = {
     "PORT" : env('DB_PORT'),
 }
 
+CRYPTO_KEY = env('CRYPTO_KEY')
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
