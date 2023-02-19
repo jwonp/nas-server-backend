@@ -84,28 +84,28 @@ class login(View):
                 "grant_type":"authorization_code" 
             }
         headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
-        # token_response = requests.post(url,data=data,headers=headers)
+        token_response = requests.post(url,data=data,headers=headers)
         # token_response = requests.get(url,verify=False)
         # return token_response
         
         # response = requests.get('https://api.ikiningyou.com/getuser/')
         # return HttpResponse(token_response.status_code)
         # return JsonResponse(response.json())
-        # access_token = token_response.json().get('access_token')
-        # refresh_token = token_response.json().get('refresh_token')
-        # result = {
-        #     'access_token':access_token,
-        # }
+        access_token = token_response.json().get('access_token')
+        refresh_token = token_response.json().get('refresh_token')
+        result = {
+            'access_token':access_token,
+        }
         # print(result)
         # response_header={ 
         #     "Access-Control-Allow-Origin":"*",
         #     "Access-Control-Allow-Methods":"GET,HEAD,OPTIONS,POST,PUT",
         #     "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Methods"
         # }
-        response = JsonResponse(data={"data":"dd"})
-        # response = JsonResponse(data=result,headers=response_header)
         
-        # response.set_cookie( key='refresh',value=refresh_token,httponly=True)
+        response = JsonResponse(data=result,headers=response_header)
+        
+        response.set_cookie( key='refresh',value=refresh_token,httponly=True)
         return response
     # return Response(data=result,headers=headers)
 
