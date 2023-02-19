@@ -73,8 +73,8 @@ class login(View):
 
         code = json.loads(request.body).get('code')
         print(f"code:{code}")
-        url ='https://api.ikiningyou.com/getusers/'
-        # url ='https://api.ikiningyou.com/users/o/token/'
+        # url ='https://api.ikiningyou.com/getusers/'
+        url ='https://api.ikiningyou.com/users/o/token/'
         data={
                 "client_id":settings.AUTH_DATA['CLIENT_ID'],
                 "client_secret":settings.AUTH_DATA['CLIENT_SECRET'],
@@ -83,10 +83,10 @@ class login(View):
                 "redirect_uri":"https://www.ikiningyou.com/",
                 "grant_type":"authorization_code" 
             }
-        # headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
-        # token_response = requests.post(url,data=data,headers=headers)
-        token_response = requests.get(url,verify=False)
-        return token_response
+        headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
+        token_response = requests.post(url,data=data,headers=headers)
+        # token_response = requests.get(url,verify=False)
+        # return token_response
         
         # response = requests.get('https://api.ikiningyou.com/getuser/')
         # return HttpResponse(token_response.status_code)
