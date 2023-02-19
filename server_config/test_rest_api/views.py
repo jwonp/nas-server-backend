@@ -83,7 +83,7 @@ class login(View):
                 "grant_type":"authorization_code" 
             }
         headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
-        return HttpResponse(self.request.user.username)
+        # return HttpResponse(data=self.request.user.username)
         token_response = requests.post(url,data=data,headers=headers)
         # response = requests.get('https://api.ikiningyou.com/getuser/')
         # return HttpResponse(token_response.status_code)
