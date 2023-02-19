@@ -37,7 +37,7 @@ def getFolders(request):
 @api_view(['GET'])
 def getUser(request):
     print(request.user.username)
-    return Response("res")
+    return Response(request.user.username)
 
 @api_view(['POST'])
 def submitLogin(request):
