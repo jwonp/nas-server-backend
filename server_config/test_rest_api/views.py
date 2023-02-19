@@ -100,7 +100,7 @@ class login(View):
         response_header={ 
             "Access-Control-Allow-Origin":"*",
             "Access-Control-Allow-Methods":"GET,HEAD,OPTIONS,POST,PUT",
-            "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+            "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Methods"
         }
         response = JsonResponse(data=result,headers=response_header)
         
