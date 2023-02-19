@@ -85,8 +85,8 @@ class login(View):
             }
         # headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
         # token_response = requests.post(url,data=data,headers=headers)
-        token_response = requests.get(url)
-        return HttpResponse(token_response.text())
+        token_response = requests.get(url,verify=False)
+        return token_response
         
         # response = requests.get('https://api.ikiningyou.com/getuser/')
         # return HttpResponse(token_response.status_code)
