@@ -97,12 +97,12 @@ class login(View):
         #     'access_token':access_token,
         # }
         # print(result)
-        response_header={ 
-            "Access-Control-Allow-Origin":"*",
-            "Access-Control-Allow-Methods":"GET,HEAD,OPTIONS,POST,PUT",
-            "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Methods"
-        }
-        response = JsonResponse(data={"data":"dd"},headers=response_header)
+        # response_header={ 
+        #     "Access-Control-Allow-Origin":"*",
+        #     "Access-Control-Allow-Methods":"GET,HEAD,OPTIONS,POST,PUT",
+        #     "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Methods"
+        # }
+        response = JsonResponse(data={"data":"dd"})
         # response = JsonResponse(data=result,headers=response_header)
         
         # response.set_cookie( key='refresh',value=refresh_token,httponly=True)
