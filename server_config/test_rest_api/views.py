@@ -97,8 +97,13 @@ class login(View):
             'access_token':access_token,
         }
         print(result)
-        # headers={'Content-type':'application/json'}
-        response = JsonResponse(data=result)
+        response_header={ 
+            "Access-Control-Allow-Origin":"*",
+            "Access-Control-Allow-Methods":"GET,HEAD,OPTIONS,POST,PUT",
+            "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+        }
+        response = JsonResponse(data=result,headers=response_header)
+        
         response.set_cookie( key='refresh',value=refresh_token,httponly=True)
         return response
     # return Response(data=result,headers=headers)
