@@ -8,11 +8,12 @@ code_verifier = base64.urlsafe_b64encode(code_verifier.encode('utf-8'))
 
 code_challenge = hashlib.sha256(code_verifier).digest()
 code_challenge = base64.urlsafe_b64encode(code_challenge).decode('utf-8').replace('=', '')
-
+deve = code_verifier.decode()
 print(code_verifier)
 print("++++++")
+print(deve)
+print("++++++")
 print(code_challenge)
-
 
 # http://127.0.0.1:8000/o/authorize/?response_type=code&
 # code_challenge=f7pBXnqAX8vVNt7uYBlOWMWRVPzsnOjtV-R3UCW6njU&
