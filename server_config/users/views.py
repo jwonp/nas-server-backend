@@ -28,10 +28,12 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from oauth2_provider.models import get_access_token_model, get_application_model
 from oauth2_provider.signals import app_authorized
-class CustomTokenView(TokenView):
+class RefreshToken(TokenView):
     @method_decorator(sensitive_post_parameters("password"))
     def post(self, request, *args, **kwargs):
-        url, headers, body, status = self.create_token_response(request)
+        replaced_request = request.body.replace("&RefreshToken;",request.COOKIES['refresh'])
+        
+        url, headers, body, status = self.create_token_response(replaced_request)
         if status == 200:
             access_token = json.loads(body).get("access_token")
             if access_token is not None:
@@ -57,28 +59,28 @@ class Validtoken(ProtectedResourceView):
     def get(self, request, *args, **kwargs):
         return JsonResponse({'name':f'{request.user.username}'})
 
-class Refreshtoken(ProtectedResourceView):
-    permission_classes = [TokenHasReadWriteScope]
-    def post(self, request, *args, **kwargs):
+# class Refreshtoken(ProtectedResourceView):
+#     permission_classes = [TokenHasReadWriteScope]
+#     def post(self, request, *args, **kwargs):
 
-        body = json.loads(request.body)
-        refresh_token = body.get('refresh_token')
-        url ='https://api.ikiningyou.com/users/o/token/'
-        data={
-            "grant_type":"refresh_token", 
-            "refresh_token":refresh_token,
-            "client_id":settings.AUTH_DATA['CLIENT_ID'],
-            "client_secret":settings.AUTH_DATA['CLIENT_SECRET']
-        }
-        headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
-        response = requests.post(url,data=data,headers=headers)
-        access_token = response.json().get('access_token')
-        refresh_token = response.json().get('refresh_token')
-        result = {
-        'access_token':access_token,
-        'refresh_token':refresh_token
-        }
-        return JsonResponse(result, status=200)
+#         body = json.loads(request.body)
+#         refresh_token = body.get('refresh_token')
+#         url ='https://api.ikiningyou.com/users/o/token/'
+#         data={
+#             "grant_type":"refresh_token", 
+#             "refresh_token":refresh_token,
+#             "client_id":settings.AUTH_DATA['CLIENT_ID'],
+#             "client_secret":settings.AUTH_DATA['CLIENT_SECRET']
+#         }
+#         headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
+#         response = requests.post(url,data=data,headers=headers)
+#         access_token = response.json().get('access_token')
+#         refresh_token = response.json().get('refresh_token')
+#         result = {
+#         'access_token':access_token,
+#         'refresh_token':refresh_token
+#         }
+#         return JsonResponse(result, status=200)
 
 class upload_files(ProtectedResourceView):
     permission_classes = [TokenHasReadWriteScope]
