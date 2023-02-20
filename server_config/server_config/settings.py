@@ -53,8 +53,7 @@ INSTALLED_APPS = [
     # OAUTH2
     'oauth2_provider',
     'corsheaders',
-    #debug
-    "debug_toolbar",
+
 
 ]
 
@@ -152,10 +151,7 @@ REST_FRAMEWORK = {
     ]
 }
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
+
     'default' : {
         'ENGINE' : DATABASE_DATA.get('ENGINE'),
         'NAME' : DATABASE_DATA.get('NAME'),
@@ -181,9 +177,10 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = ['http://52.78.16.47:8000','http://127.0.0.1:3000','http://www.ikiningyou.com','http://api.ikiningyou.com', 'https://52.78.16.47:8000','https://127.0.0.1:3000','https://www.ikiningyou.com','https://api.ikiningyou.com']
 CORS_ALLOW_HEADERS = list(default_headers) + ['Set-Cookie']
 CORS_ORIGIN_WHITELIST = (
-    'http://52.78.16.47:8000','http://127.0.0.1:3000','http://www.ikiningyou.com','http://api.ikiningyou.com',
-    'https://52.78.16.47:8000','https://127.0.0.1:3000','https://www.ikiningyou.com','https://api.ikiningyou.com'
-
+    'http://52.78.16.47:8000','http://127.0.0.1:3000',
+    'http://www.ikiningyou.com','http://api.ikiningyou.com',
+    'https://52.78.16.47:8000','https://127.0.0.1:3000',
+    'https://www.ikiningyou.com','https://api.ikiningyou.com' 
 )
 SESSION_COOKIE_HTTPONLY = True
 # CSRF_COOKIE_HTTPONLY = True
@@ -192,11 +189,3 @@ OAUTH2_PROVIDER = {
     'ALLOWED_REDIRECT_URI_SCHEMES':['https'],
     'SCOPES' : {'read': 'Read scope', 'write':'Write scope', 'groups':'Access to your groups'}
 }
-
-INTERNAL_IPS = [
-    "127.0.0.1",
-    "52.78.16.47",
-    "ikiningyou.com"
-    "api.ikiningyou.com"
-    "www.ikiningyou.com"
-]
