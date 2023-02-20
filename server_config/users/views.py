@@ -70,7 +70,7 @@ class upload_files(ProtectedResourceView):
         meta_data = []
         files = check_file_name_is_valid(upload_files)
         result_remaining_size = check_remaining_storage_space(upload_files=files, username=username)
-        
+        return JsonResponse({"username":username,'save_path':save_path,"local_path":f'{settings.MEDIA_ROOT}'})
         if(result_remaining_size.get('total_file_size') != -1):
             meta_data = save_file(upload_files=files,username=username,save_path=save_path)
         else:
