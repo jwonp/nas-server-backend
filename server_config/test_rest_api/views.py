@@ -2,11 +2,7 @@ import json
 from django.http import JsonResponse
 import requests
 from django.conf import settings
-# from django.shortcuts import render
 
-# Create your views here.
-# from django.shortcuts import render
-# from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from oauth2_provider.views.base import AuthorizationView
@@ -16,14 +12,11 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate,login as run_login, logout as run_logout
 from .functions import save_user,save_user_storage
-# from django.utils.encoding import uri_to_iri
-# from .models import Board
-# from .serializers import BoardSerializer
-# Create your views here.
-
-
-# def viewjson(request):
-#     return JsonResponse("REST API end point...", safe=False)
+from oauth2_provider.views.base import TokenView
+from django.utils.decorators import method_decorator
+from django.views.decorators.debug import sensitive_post_parameters
+from oauth2_provider.models import get_access_token_model, get_application_model
+from oauth2_provider.signals import app_authorized
 
 
 @api_view(['POST'])
@@ -124,10 +117,7 @@ def logout(request):
     # requests.post(url,data=json.dumps(revoke_data),headers=headers)
     return Response("")
 
-@api_view(['GET'])
-def authorizationview(request):
-    print(AuthorizationView.form_class.type())
-    return HttpResponse("")
+
 
 @api_view(['GET'])
 def refresh_token(request):
@@ -152,61 +142,24 @@ def refresh_token(request):
     response = Response(result)
     response.set_cookie(key='refresh',value=refresh_token,httponly=True)
     return response
-# @api_view(['GET'])
-# def index(request):
-#     api_urls={
-#         'List' : '/boardlist',
-#         'Detail' : '/boardlist/<str:pk>/',
-#         'Create' : '/boardinsert',
-#         'Update' : '/boardupdate/<str:pk>/',
-#         'Delete' : '/boarddelete/<str:pk>'
-#     }
-#     return Response(api_urls)
 
-# @api_view(['GET'])
-# def boardList(request):
-#     print("boardlist")
-#     boards = Board.objects.all()
-#     serializer = BoardSerializer(boards, many=True)
-#     return Response(serializer.data)
 
-# @api_view(['GET'])
-# def boardView(request,pk):
-#     boards = Board.objects.get(id=pk)
-#     serializer = BoardSerializer(boards, many=False)
-#     return Response(serializer.data)
-
-# @api_view(['POST'])
-# def boardInsert(request):
-#     serializer = BoardSerializer(data=request.data)
-    
-#     if serializer.is_valid():
-#         print("Valid insert...")
-#         serializer.save()
-#     else:
-#         print("inValid insert...")
-   
-#     return Response(serializer.data)
-
-# @api_view(['PUT'])
-# def boardUpdate(request, pk):
-#     board = Board.objects.get(id=pk)
-#     serializer = BoardSerializer(instance=board,data=request.data)
-    
-#     if serializer.is_valid():
-#         print("Valid update...")
-#         serializer.save()
-#     else:
-#         print("inValid update...")
-   
-#     return Response(serializer.data)
-
-# @api_view(['DELETE'])
-# def boardDelete(request, pk):
-#     board = Board.objects.get(id=pk)
-    
-#     if board:
-#        board.delete()
-    
-#     return Response("Deleted...")
-
+class CustomTokenView(TokenView):
+    @method_decorator(sensitive_post_parameters("password"))
+    def post(self, request, *args, **kwargs):
+        url, headers, body, status = self.create_token_response(request)
+        if status == 200:
+            body = json.loads(body)
+            access_token = body.get("access_token")
+            if access_token is not None:
+                token = get_access_token_model().objects.get(token=access_token)
+                app_authorized.send(sender=self, request=request,token=token)
+                body = {
+                    'access_token':body.get("access_token")
+                }
+                body = json.dumps(body) 
+        response = HttpResponse(content=body, status=status)
+        response.set_cookie(key='refresh',value=body.get("refresh_token"),httponly=True)
+        for k, v in headers.items():
+            response[k] = v
+        return response

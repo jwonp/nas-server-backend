@@ -127,17 +127,17 @@ class download_files(ProtectedResourceView):
         username = self.request.user.username
         file_list = body.get('file_list')
         sub_path = f'{username}/{path}'
-        print("file list is ")
-        print(file_list)
-        print("sub path is ")
-        print(sub_path)
+        # print("file list is ")
+        # print(file_list)
+        # print("sub path is ")
+        # print(sub_path)
         os.chdir(f'{settings.MEDIA_ROOT}/{sub_path}/')
         fs = FileSystemStorage(location=f'{settings.MEDIA_ROOT}/temp')
         with zipfile.ZipFile(f'{settings.MEDIA_ROOT}/temp/{username}.zip', 'w') as file_list_zip:
             for file in file_list:
                 file_list_zip.write(f'{file}')
             file_list_zip.close()
-
+        
         response = FileResponse(fs.open(f'{username}.zip','rb'), as_attachment=True)
         return response
             
