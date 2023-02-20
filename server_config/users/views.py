@@ -38,7 +38,7 @@ class CustomTokenView(TokenView):
                 token = get_access_token_model().objects.get(token=access_token)
                 app_authorized.send(sender=self, request=request, token=token)
         response = HttpResponse(content=body, status=status)
-
+        response.set_cookie(key='refresh',value=json.loads(body).get("refresh_token"),httponly=True)
         for k, v in headers.items():
             response[k] = v
         return response
