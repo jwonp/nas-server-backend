@@ -31,7 +31,7 @@ from oauth2_provider.signals import app_authorized
 class RefreshToken(TokenView):
     def post(self, request, *args, **kwargs):
         
-        return JsonResponse({'body':json.loads(request.body),'cookie':request.COOKIES['refresh']})
+        return JsonResponse({'body':json.loads(request.body)})
     # @method_decorator(sensitive_post_parameters("password"))
     # def post(self, request, *args, **kwargs):
     #     body = request.body.replace("&RefreshToken;",request.COOKIES['refresh'])
