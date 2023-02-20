@@ -67,11 +67,12 @@ class upload_files(ProtectedResourceView):
         upload_files = request.FILES.getlist("files")
         username = request.user.username
         # save_path = parse.unquote(request.META.get('HTTP_FILE_PATH'))
+        save_path = request.GET.get('File-Path')
 
         meta_data = []
         files = check_file_name_is_valid(upload_files)
         result_remaining_size = check_remaining_storage_space(upload_files=files, username=username)
-        return JsonResponse({"username":username,'GET':request.GET,'POST':request.POST,"local_path":f'{settings.MEDIA_ROOT}'})
+        # return JsonResponse({"username":username,'GET':request.GET,'POST':request.POST,"local_path":f'{settings.MEDIA_ROOT}'})
         if(result_remaining_size.get('total_file_size') != -1):
             meta_data = save_file(upload_files=files,username=username,save_path=save_path)
         else:
