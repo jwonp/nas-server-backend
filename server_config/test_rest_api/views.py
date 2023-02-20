@@ -112,16 +112,16 @@ class login(View):
 @api_view(['POST'])
 def logout(request):
     run_logout(request)
-    data = request.data
-    print(data.get('token'))
+    # data = request.data
+    # print(data.get('token'))
     
-    url ='https://api.ikiningyou.com/users/o/revoke-token/'
-    revoke_data={
-        'token':data.get('token'),
-        'client_id':settings.AUTH_DATA.get('CLIENT_ID')
-    }
-    headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
-    requests.post(url,data=json.dumps(revoke_data),headers=headers)
+    # url ='https://api.ikiningyou.com/users/o/revoke-token/'
+    # revoke_data={
+    #     'token':data.get('token'),
+    #     'client_id':settings.AUTH_DATA.get('CLIENT_ID')
+    # }
+    # headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
+    # requests.post(url,data=json.dumps(revoke_data),headers=headers)
     return Response("")
 
 @api_view(['GET'])
