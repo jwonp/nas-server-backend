@@ -23,6 +23,31 @@ from .functions import check_file_name_is_valid, convert_path, save_folder_in_fi
 from users.functions import check_remaining_storage_space,save_file,subject_used_storage_size,save_file_path
 from .serializers import FileListSerializer
 from .models import File
+from oauth2_provider.views.base import TokenView
+from django.utils.decorators import method_decorator
+from django.views.decorators.debug import sensitive_post_parameters
+from oauth2_provider.models import get_access_token_model, get_application_model
+from oauth2_provider.signals import app_authorized
+class CustomTokenView(TokenView):
+    @method_decorator(sensitive_post_parameters("password"))
+    def post(self, request, *args, **kwargs):
+        url, headers, body, status = self.create_token_response(request)
+        if status == 200:
+            body = json.loads(body)
+            access_token = body.get("access_token")
+            if access_token is not None:
+                token = get_access_token_model().objects.get(token=access_token)
+                app_authorized.send(sender=self, request=request,token=token)
+                body = {
+                    'access_token':body.get("access_token")
+                }
+                body = json.dumps(body) 
+        response = HttpResponse(content=body, status=status)
+        response.set_cookie(key='refresh',value=body.get("refresh_token"),httponly=True)
+        for k, v in headers.items():
+            response[k] = v
+        return response
+
 class ApiEndpoint(ProtectedResourceView):
     def get(self, request, *args, **kwargs):
         return HttpResponse('Hello, OAuth2!')

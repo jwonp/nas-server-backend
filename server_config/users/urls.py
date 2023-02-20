@@ -1,7 +1,7 @@
 import oauth2_provider.views as oauth2_views
 from django.urls import path, include
 from django.conf import settings
-from .views import ApiEndpoint, Closedpoint, Validtoken, add_folder,secret_page,upload_files,get_file_list_by_path,get_storage_size,delete_files,download_files
+from .views import CustomTokenView,ApiEndpoint, Closedpoint, Validtoken, add_folder,secret_page,upload_files,get_file_list_by_path,get_storage_size,delete_files,download_files
 from django.urls import path, include
 
 # from auth.apis import (
@@ -14,7 +14,8 @@ from django.urls import path, include
 # OAuth2 provider endpoints
 oauth2_endpoint_views = [
     path('authorize/', oauth2_views.AuthorizationView.as_view(), name="authorize"),
-    path('token/', oauth2_views.TokenView.as_view(), name="token"),
+    path('token/', CustomTokenView.as_view(), name="token"),
+    # path('token/', oauth2_views.TokenView.as_view(), name="token"),
     path('revoke-token/', oauth2_views.RevokeTokenView.as_view(), name="revoke-token"),
 ]
 
