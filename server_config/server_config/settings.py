@@ -58,8 +58,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    #debug
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -188,4 +187,89 @@ OAUTH2_PROVIDER = {
     'ACCESS_TOKEN_EXPIRE_SECONDS': 60 * 120,
     'ALLOWED_REDIRECT_URI_SCHEMES':['https'],
     'SCOPES' : {'read': 'Read scope', 'write':'Write scope', 'groups':'Access to your groups'}
+}
+
+
+DEFAULT_LOGGING = {
+    # 설정이 dictConfig version 1 형식
+    # 현재는 버전 하나 뿐
+    'version': 1,
+
+    # 기존의 로거들을 비활성화하지 않는다.
+    # 이전 버전과의 호환성을 위한 항목
+    'disable_existing_loggers': False,
+
+    # 필터 2개 정의
+    'filters': {
+        # DEBUG=False인 경우만 핸들러 동작.
+        'require_debug_false': {
+            # 특별키 (): 필터 객체를 생성하기 위한 클래스를
+            # 장고에서 별도로 정의
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+
+        # DEBUG=True인 경우만 핸들러 동작
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+
+    # 포맷터 1개 정의
+    'formatters': {
+        # 로그 생성 시각과 로그 메시지만을 출력
+        'django.server': {
+            # 포맷터 객체를 생성하기 위한 클래스를 별도로 정의
+            '()': 'django.utils.log.ServerFormatter',
+            'format': '[{server_time}] {message}',
+            'style': '{',
+        }
+    },
+
+    # 핸들러 3개 정의
+    'handlers': {
+        # INFO 레벨 및 그 이상의 메시지를 표준 에러로 출력해주는
+        # StreamHandler 클래스 사용
+       'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+        },
+
+        # django.server 로거에서 이 핸들러 사용
+        'django.server': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'django.server',
+        },
+
+        # ERROR 및 그 이상의 로그 메시지를 사이트 관리자에게
+        # 이메일로 보내주는 AdminEmailHandler 클래스 사용
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+
+    # 로거 2개 정의
+    'loggers': {
+        # INFO 및 그 이상의 로그 메시지를
+        # console 및 mail_admins 핸들러에게 전송
+        # django.* 계층. 즉, django 패키지 최상위 로거
+        'django': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'INFO',
+        },
+
+        # INFO 레벨 및 그 이상의 메시지를
+        # django.server 핸들러에게 전송
+        # runserver에서 사용하는 로거
+        # 5XX : EROOR, 4XX: WARNING, 그 외 INFO 메시지
+        'django.server': {
+            'handlers': ['django.server'],
+            'level': 'INFO',
+            # 상위 로거로 로그 메시지 전파하지 않는다.
+            'propagate': False,
+        },
+    }
 }
