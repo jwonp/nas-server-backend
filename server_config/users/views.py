@@ -31,9 +31,10 @@ from oauth2_provider.signals import app_authorized
 class RefreshToken(TokenView):
     @method_decorator(sensitive_post_parameters("password"))
     def post(self, request, *args, **kwargs):
-        replaced_request = request.body.replace("&RefreshToken;",request.COOKIES['refresh'])
+        body = json.loads(request.body).replace("&RefreshToken;",request.COOKIES['refresh'])
+        request.body = json.dumps(body)
         
-        url, headers, body, status = self.create_token_response(replaced_request)
+        url, headers, body, status = self.create_token_response(request)
         if status == 200:
             access_token = json.loads(body).get("access_token")
             if access_token is not None:
