@@ -6,10 +6,10 @@ from corsheaders.defaults import default_headers
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG=False
+DEBUG=True
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-env = environ.Env(DEBUG=(bool,False))
+env = environ.Env(DEBUG=(bool,True))
 environ.Env.read_env(
     env_file = os.path.join(BASE_DIR,'.env')
 )
