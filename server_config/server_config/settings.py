@@ -53,6 +53,9 @@ INSTALLED_APPS = [
     # OAUTH2
     'oauth2_provider',
     'corsheaders',
+    #debug
+    "debug_toolbar",
+
 ]
 
 MIDDLEWARE = [
@@ -66,6 +69,8 @@ MIDDLEWARE = [
     # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'oauth2_provider.middleware.OAuth2TokenMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    #debug
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 AUTHENTICATION_BACKENDS = [
     'oauth2_provider.backends.OAuth2Backend',
@@ -187,3 +192,11 @@ OAUTH2_PROVIDER = {
     'ALLOWED_REDIRECT_URI_SCHEMES':['https'],
     'SCOPES' : {'read': 'Read scope', 'write':'Write scope', 'groups':'Access to your groups'}
 }
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "52.78.16.47",
+    "ikiningyou.com"
+    "api.ikiningyou.com"
+    "www.ikiningyou.com"
+]
