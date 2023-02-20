@@ -5,7 +5,7 @@ import requests
 import json
 import zipfile
 from urllib import parse
-
+from django.views import View
 from collections import OrderedDict
 from oauth2_provider.views.generic import ProtectedResourceView
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
@@ -28,7 +28,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from oauth2_provider.models import get_access_token_model, get_application_model
 from oauth2_provider.signals import app_authorized
-class RefreshToken(TokenView):
+class RefreshToken(View):
     # @method_decorator(sensitive_post_parameters("password"))
     def post(self, request, *args, **kwargs):
         # body = request.body.replace("&RefreshToken;",request.COOKIES['refresh'])
