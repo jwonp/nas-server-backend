@@ -46,7 +46,7 @@ class RefreshToken(View):
         
         cookie = request.COOKIES['refresh']
         data = json.loads(request.body).get("data")
-        return HttpResponse(f'{data} and {cookie}')
+        return HttpResponse(f'{data}')
         return response
 
 class ApiEndpoint(ProtectedResourceView):
