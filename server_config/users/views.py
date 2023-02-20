@@ -33,7 +33,7 @@ class RefreshToken(TokenView):
     def post(self, request, *args, **kwargs):
         body = json.loads(request.body).replace("&RefreshToken;",request.COOKIES['refresh'])
         request.body = json.dumps(body)
-        
+        return HttpResponse(request.body)
         url, headers, body, status = self.create_token_response(request)
         if status == 200:
             access_token = json.loads(body).get("access_token")
