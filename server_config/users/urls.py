@@ -1,7 +1,7 @@
 import oauth2_provider.views as oauth2_views
 from django.urls import path, include
 from django.conf import settings
-from .views import RefreshToken,ApiEndpoint, Closedpoint, Validtoken, add_folder,secret_page,upload_files,get_file_list_by_path,get_storage_size,delete_files,download_files
+from .views import ApiEndpoint, Closedpoint, Validtoken, add_folder,secret_page,upload_files,get_file_list_by_path,get_storage_size,delete_files,download_files
 from django.urls import path, include
 
 # from auth.apis import (
