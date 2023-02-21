@@ -28,21 +28,21 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from oauth2_provider.models import get_access_token_model, get_application_model
 from oauth2_provider.signals import app_authorized
-class RefreshToken(View):
-    @method_decorator(sensitive_post_parameters("password"))
-    def post(self, request, *args, **kwargs):
-        body = request.body.replace("&RefreshToken;",request.COOKIES['refresh'])
-        request.body =  request.body.replace("&RefreshToken;",request.COOKIES['refresh'])
-        # return HttpResponse(request.body)
-        url, headers, body, status = self.create_token_response(request)
-        if status == 200:
-            access_token = json.loads(body).get("access_token")
-            if access_token is not None:
-                token = get_access_token_model().objects.get(token=access_token)
-                app_authorized.send(sender=self, request=request, token=token)
-        response = HttpResponse(content=body, status=status)
-        for k, v in headers.items():
-            response[k] = v
+# class RefreshToken(View):
+#     @method_decorator(sensitive_post_parameters("password"))
+#     def post(self, request, *args, **kwargs):
+#         body = request.body.replace("&RefreshToken;",request.COOKIES['refresh'])
+#         request.body =  request.body.replace("&RefreshToken;",request.COOKIES['refresh'])
+#         # return HttpResponse(request.body)
+#         url, headers, body, status = self.create_token_response(request)
+#         if status == 200:
+#             access_token = json.loads(body).get("access_token")
+#             if access_token is not None:
+#                 token = get_access_token_model().objects.get(token=access_token)
+#                 app_authorized.send(sender=self, request=request, token=token)
+#         response = HttpResponse(content=body, status=status)
+#         for k, v in headers.items():
+#             response[k] = v
         
         # cookie = request.COOKIES.get('refresh')
         # data = json.loads(request.body).get("data")
