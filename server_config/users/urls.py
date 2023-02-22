@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from .views import  Validtoken, add_folder,upload_files,get_file_list_by_path,get_storage_size,delete_files,download_files
 from django.urls import path, include
-app_name = 'users'
+
 
 oauth2_endpoint_views = [
     path('authorize/', oauth2_views.AuthorizationView.as_view(), name="authorize"),
