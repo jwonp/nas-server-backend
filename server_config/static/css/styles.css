@@ -3,13 +3,15 @@ body {
     padding: 0;
     margin: 0;
     height: 100%;
-    background-color: #393E46;
-
-
+    background-color: #393E46 !important;
     overflow: hidden;
 }
 
 .style-container {
+    top: 0;
+    left: 0;
+    position: fixed;
+    background-color: #393E46;
     color: #F7F7F7;
     font-size: 24px;
     width: 100%;
@@ -34,6 +36,7 @@ body {
 .style-btn {
     width: 240px;
     height: 80px;
+    margin: 0 auto;
     background-color: #393E46;
     color: #F7F7F7;
     padding: 16px;
@@ -42,12 +45,14 @@ body {
     border-radius: 8px;
 }
 
+.form {}
+
 .form p {
     margin: 0 auto;
 }
 
 .form p label {
-    width: 160px;
+    width: 120px;
 }
 
 .form p input {
