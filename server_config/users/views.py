@@ -38,7 +38,7 @@ class upload_files(ProtectedResourceView):
     def post(self, request, *args, **kwargs):
         upload_files = request.FILES.getlist("files")
         username = request.user.username
-        save_path = request.GET.get('File-Path')
+        save_path = parse.unquote(request.GET.get('File-Path'))
 
         meta_data = []
         files = check_file_name_is_valid(upload_files)
