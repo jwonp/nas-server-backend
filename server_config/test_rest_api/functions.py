@@ -28,8 +28,3 @@ def save_user_storage(username):
         print("fail save_user_storage")
     return checker
 
-def delete_temp_file(username):
-    location = f'{settings.MEDIA_ROOT}/temp'
-    file_name = f'{username}.zip'
-    fs = FileSystemStorage(location=location)
-    fs.delete(file_name)

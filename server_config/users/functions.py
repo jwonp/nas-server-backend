@@ -1,5 +1,5 @@
 import datetime
-from urllib import parse
+
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from .models import UserStorage,File
@@ -181,3 +181,9 @@ def convert_path(path):
     else:
         result = splited_path
     return result
+
+def delete_temp_file(username):
+    location = f'{settings.MEDIA_ROOT}/temp'
+    file_name = f'{username}.zip'
+    fs = FileSystemStorage(location=location)
+    fs.delete(file_name)
