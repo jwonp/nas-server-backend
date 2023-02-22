@@ -1,9 +1,9 @@
 from django.http.response import HttpResponse
-from django.shortcuts import render
+
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate,login as run_login, logout as run_logout
-from .functions import delete_temp_file, save_user,save_user_storage
+from .functions import  save_user,save_user_storage
 
 
 @api_view(['POST'])
@@ -22,7 +22,7 @@ def submitLogin(request):
     data = request.data 
     username = data.get('user_id')
     password = data.get('user_password')
-    delete_temp_file(username)
+    
     user = authenticate(request, username=username, password=password)
     if user is not None:
         print("success to login")

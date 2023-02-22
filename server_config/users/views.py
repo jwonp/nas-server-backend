@@ -14,6 +14,8 @@ from rest_framework.decorators import api_view
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
+
+from server_config.test_rest_api.functions import delete_temp_file
 from .models import UserStorage
 from .serializers import StorageSizesSerializer
 from django.conf import settings
@@ -68,9 +70,8 @@ class delete_files(ProtectedResourceView):
 
 class get_storage_size(ProtectedResourceView):
     def get(self, request, *args, **kwargs):
-        
         username = self.request.user.username
-        print(username)
+        delete_temp_file(username)
         storage_sizes = UserStorage.objects.get(username=username)
         serializer = StorageSizesSerializer(storage_sizes, many=False)
         return JsonResponse(data=serializer.data)
