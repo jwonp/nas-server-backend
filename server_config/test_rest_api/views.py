@@ -2,7 +2,7 @@ from django.http.response import HttpResponse
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from django.contrib.auth import authenticate,login as run_login, logout as run_logout
+# from django.contrib.auth import authenticate,login as run_login, logout as run_logout
 from .functions import  save_user,save_user_storage
 
 
@@ -38,7 +38,6 @@ def register(request):
     username = data.get('user_id')
     save_user(data)
     is_done = save_user_storage(username)
-    print(is_done)
     return HttpResponse(is_done,status=200)
 
 
