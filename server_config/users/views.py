@@ -112,13 +112,15 @@ class download_files(ProtectedResourceView):
 @login_required()
 @api_view(['GET'])
 def get_file_list_by_path(request,path):
+    username = request.user.username
+    return Response(username)
     file_path = path
     file_path = file_path.replace("&","/")
     if(file_path == '내_드라이브'):
         file_path = "/"
     else:
         file_path = file_path + '/'
-    file_list = File.objects.filter(file_path=file_path)
+    file_list = File.objects.filter(file_path=file_path, file_owner=username)
     serializer = FileListSerializer(file_list, many=True)
     return Response(serializer.data)
      
