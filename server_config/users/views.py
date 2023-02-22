@@ -1,3 +1,4 @@
+
 import os
 
 import json
@@ -23,6 +24,11 @@ from .models import File
 
 
 
+
+class Validtoken(ProtectedResourceView):
+    permission_classes = [TokenHasReadWriteScope]
+    def get(self, request, *args, **kwargs):
+        return JsonResponse({'name':f'{request.user.username}'})
 
 
 class upload_files(ProtectedResourceView):
@@ -117,3 +123,7 @@ def get_file_list_by_path(request,path):
     return Response(serializer.data)
      
     
+@login_required()
+def secret_page(request, *args, **kwargs):
+    return HttpResponse('Secret contents!', status=200)
+
