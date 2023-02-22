@@ -113,7 +113,6 @@ class download_files(ProtectedResourceView):
 @api_view(['GET'])
 def get_file_list_by_path(request,path):
     username = request.user.username
-    return Response(username)
     file_path = path
     file_path = file_path.replace("&","/")
     if(file_path == '내_드라이브'):
