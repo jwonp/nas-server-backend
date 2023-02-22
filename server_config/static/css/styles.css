@@ -9,9 +9,6 @@ body {
 }
 
 .style-container {
-    top: 0;
-    left: 0;
-    position: fixed;
     background-color: #393E46;
     color: #F7F7F7;
     font-size: 24px;
