@@ -36,7 +36,7 @@ def getUser(request):
 @api_view(['POST'])
 def register(request):
     user_count = len(User.objects.all())
-    if user_count > 5:
+    if user_count > 8:
         return HttpResponse(user_count,status=200)
     data = request.data
     username = data.get('user_id')
