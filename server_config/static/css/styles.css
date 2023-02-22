@@ -11,7 +11,7 @@ body {
 
 .style-wrapper {
     width: 640px;
-    height: 360px;
+    height: 420px;
     background-color: #393E46;
     border: 1px solid #F7F7F7;
     border-radius: 8px;
@@ -85,6 +85,8 @@ body {
 
 .form p {
     margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 30px;
 }
 
