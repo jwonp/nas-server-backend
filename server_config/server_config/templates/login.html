@@ -4,14 +4,15 @@
 {% block title %} Login {% endblock %}
 
 {% block content %}
-<div class="container">
+
+<div class="container style-wrapper">
     <div class="card mt-5" style="width: 15rem;">
-        <div class="card-header">Login</div>
+        <div class="card-header">Ikiningyou</div>
         <div class="card-body">
             <form class="form" role="form" method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary styles-btn">Login</button>
             </form>
         </div>
         </div>

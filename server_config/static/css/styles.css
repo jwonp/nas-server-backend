@@ -1,0 +1,17 @@
+body {
+    background-color: #393E46;
+}
+
+.styles-wrapper {
+    background-color: #393E46;
+    border: 1px solid #F7F7F7;
+    color: #F7F7F7;
+    margin: 0 auto;
+    width: 800px;
+}
+
+.styles-btn {
+    background-color: #393E46;
+    color: #F7F7F7;
+    border-radius: 8px;
+}
