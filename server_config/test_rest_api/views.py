@@ -1,27 +1,14 @@
-import json
-from django.http import JsonResponse
-import requests
-from django.conf import settings
-
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from oauth2_provider.views.base import AuthorizationView
 from django.http.response import HttpResponse
-from django.views import View
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate,login as run_login, logout as run_logout
 from .functions import save_user,save_user_storage
-
-
 
 @api_view(['POST'])
 def getFolders(request):
     print("getFolders")
     folders = []
     return Response(folders)
-
-
 
 @api_view(['GET'])
 def getUser(request):
@@ -30,8 +17,7 @@ def getUser(request):
 
 @api_view(['POST'])
 def submitLogin(request):
-    data = request.data
-    
+    data = request.data 
     username = data.get('user_id')
     password = data.get('user_password')
     user = authenticate(request, username=username, password=password)
@@ -57,7 +43,3 @@ def register(request):
 def logout(request):
     run_logout(request)
     return Response("")
-
-
-
-
