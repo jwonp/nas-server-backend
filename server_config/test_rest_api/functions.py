@@ -1,5 +1,7 @@
 from users.models import User
 from users.serializers import UserStorageSerializer
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 #views > register
 def save_user(data):
     user = User.objects.create_user(data.get('user_id'),data.get('user_email'),data.get('user_password'))
@@ -26,4 +28,8 @@ def save_user_storage(username):
         print("fail save_user_storage")
     return checker
 
-
+def delete_temp_file(username):
+    location = f'{settings.MEDIA_ROOT}/temp/'
+    file_name = f'{username}.zip'
+    fs = FileSystemStorage(location=location)
+    fs.delete(file_name)

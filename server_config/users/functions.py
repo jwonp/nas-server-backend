@@ -110,6 +110,8 @@ def delete_file(delete_files,username,saved_path):
     print(meta_data)
     return meta_data
 
+
+
 def add_used_storage_size(username,meta_data):
     total_size = 0
     for item in meta_data:
