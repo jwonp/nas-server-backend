@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 app_name = 'test_rest_api'
 urlpatterns = [
+    path('out/',views.logout_page,name='logout_page'),
     path('getfolders/', views.getFolders, name='getfolders'),
     path('logout/', views.logout, name='logout'),
     path('register/', views.register, name='register'),
