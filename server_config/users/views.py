@@ -1,12 +1,9 @@
-import datetime
-from io import StringIO
 import os
-import requests
+
 import json
 import zipfile
 from urllib import parse
-from django.views import View
-from collections import OrderedDict
+
 from oauth2_provider.views.generic import ProtectedResourceView
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
 from django.http import FileResponse
@@ -23,82 +20,22 @@ from .functions import check_file_name_is_valid, convert_path, save_folder_in_fi
 from users.functions import check_remaining_storage_space,save_file,subject_used_storage_size,save_file_path
 from .serializers import FileListSerializer
 from .models import File
-from oauth2_provider.views.base import TokenView
-from django.utils.decorators import method_decorator
-from django.views.decorators.debug import sensitive_post_parameters
-from oauth2_provider.models import get_access_token_model, get_application_model
-from oauth2_provider.signals import app_authorized
-# class RefreshToken(View):
-#     @method_decorator(sensitive_post_parameters("password"))
-#     def post(self, request, *args, **kwargs):
-#         body = request.body.replace("&RefreshToken;",request.COOKIES['refresh'])
-#         request.body =  request.body.replace("&RefreshToken;",request.COOKIES['refresh'])
-#         # return HttpResponse(request.body)
-#         url, headers, body, status = self.create_token_response(request)
-#         if status == 200:
-#             access_token = json.loads(body).get("access_token")
-#             if access_token is not None:
-#                 token = get_access_token_model().objects.get(token=access_token)
-#                 app_authorized.send(sender=self, request=request, token=token)
-#         response = HttpResponse(content=body, status=status)
-#         for k, v in headers.items():
-#             response[k] = v
-        
-        # cookie = request.COOKIES.get('refresh')
-        # data = json.loads(request.body).get("data")
-        # return HttpResponse(f'{data} and {cookie}')
-        # return response
 
-class ApiEndpoint(ProtectedResourceView):
-    def get(self, request, *args, **kwargs):
-        return HttpResponse('Hello, OAuth2!')
 
-class Closedpoint(ProtectedResourceView):
-    permission_classes = [TokenHasReadWriteScope]
-    def get(self, request, *args, **kwargs):
-        # print(request.user)
-        return HttpResponse('hi there')
 
-class Validtoken(ProtectedResourceView):
-    permission_classes = [TokenHasReadWriteScope]
-    def get(self, request, *args, **kwargs):
-        return JsonResponse({'name':f'{request.user.username}'})
 
-# class Refreshtoken(ProtectedResourceView):
-#     permission_classes = [TokenHasReadWriteScope]
-#     def post(self, request, *args, **kwargs):
-
-#         body = json.loads(request.body)
-#         refresh_token = body.get('refresh_token')
-#         url ='https://api.ikiningyou.com/users/o/token/'
-#         data={
-#             "grant_type":"refresh_token", 
-#             "refresh_token":refresh_token,
-#             "client_id":settings.AUTH_DATA['CLIENT_ID'],
-#             "client_secret":settings.AUTH_DATA['CLIENT_SECRET']
-#         }
-#         headers={'Content-type':'application/x-www-form-urlencoded',"Cache-Control": "no-cache"}
-#         response = requests.post(url,data=data,headers=headers)
-#         access_token = response.json().get('access_token')
-#         refresh_token = response.json().get('refresh_token')
-#         result = {
-#         'access_token':access_token,
-#         'refresh_token':refresh_token
-#         }
-#         return JsonResponse(result, status=200)
 
 class upload_files(ProtectedResourceView):
     permission_classes = [TokenHasReadWriteScope]
     def post(self, request, *args, **kwargs):
         upload_files = request.FILES.getlist("files")
         username = request.user.username
-        # save_path = parse.unquote(request.META.get('HTTP_FILE_PATH'))
         save_path = request.GET.get('File-Path')
 
         meta_data = []
         files = check_file_name_is_valid(upload_files)
         result_remaining_size = check_remaining_storage_space(upload_files=files, username=username)
-        # return JsonResponse({"username":username,'GET':request.GET,'POST':request.POST,"local_path":f'{settings.MEDIA_ROOT}'})
+
         if(result_remaining_size.get('total_file_size') != -1):
             meta_data = save_file(upload_files=files,username=username,save_path=save_path)
         else:
@@ -125,7 +62,7 @@ class delete_files(ProtectedResourceView):
 
 class get_storage_size(ProtectedResourceView):
     def get(self, request, *args, **kwargs):
-        # print(f'getStorageSize,{self.request.user.username}')
+        
         username = self.request.user.username
         print(username)
         storage_sizes = UserStorage.objects.get(username=username)
@@ -153,10 +90,7 @@ class download_files(ProtectedResourceView):
         username = self.request.user.username
         file_list = body.get('file_list')
         sub_path = f'{username}/{path}'
-        # print("file list is ")
-        # print(file_list)
-        # print("sub path is ")
-        # print(sub_path)
+      
         os.chdir(f'{settings.MEDIA_ROOT}/{sub_path}/')
         fs = FileSystemStorage(location=f'{settings.MEDIA_ROOT}/temp')
         with zipfile.ZipFile(f'{settings.MEDIA_ROOT}/temp/{username}.zip', 'w') as file_list_zip:
@@ -183,7 +117,3 @@ def get_file_list_by_path(request,path):
     return Response(serializer.data)
      
     
-@login_required()
-def secret_page(request, *args, **kwargs):
-    return HttpResponse('Secret contents!', status=200)
-
