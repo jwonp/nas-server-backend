@@ -8,18 +8,10 @@ body {
     overflow: hidden;
 }
 
-.style-container {
-    background-color: #393E46;
-    color: #F7F7F7;
-    font-size: 24px;
-    width: 640px;
-    height: 100%;
-    padding: 32px;
-}
 
 .style-wrapper {
-    width: 540px;
-    height: 420px;
+    width: 640px;
+    height: 480px;
     background-color: #393E46;
     border: 1px solid #F7F7F7;
     padding: 24px;
@@ -27,7 +19,17 @@ body {
 
 }
 
+.style-container {
+    background-color: #393E46;
+    color: #F7F7F7;
+    font-size: 24px;
+    width: 540px;
+    height: 420px;
+    padding: 24px;
+}
+
 .style-title {
+    font-size: 42px;
     padding: 20px;
 }
 
