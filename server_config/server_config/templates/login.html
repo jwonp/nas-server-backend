@@ -6,12 +6,13 @@
 {% block content %}
 <div class="style-wrapper" >
     <div class="style-container">
-        <div class="style-title">Login</div>
+        <div class="style-title">로그인</div>
         <div class="style-form card-body">
             <form class="form" role="form" method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="style-btn">Login</button>
+                <button type="submit" class="style-btn">로그인</button>
+                <a href="https://www.ikiningyou.com/register/">회원가입</a>
             </form>
         </div>
         </div>
