@@ -8,8 +8,18 @@
   {% translate "Thanks for spending some quality time with the web site today."
   %}
 </p>
-
 <p><a href="{% url 'admin:index' %}">{% translate 'Log in again' %}</a></p> -->
+<div id="wrapper"></div>
+<style>
+  #wrapper {
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute;
+    background-color: #393e46;
+  }
+</style>
 <script>
   history.go(-3);
 </script>
