@@ -11,9 +11,10 @@ body {
 
 .style-wrapper {
     width: 640px;
-    height: 480px;
+    height: 360px;
     background-color: #393E46;
     border: 1px solid #F7F7F7;
+    border-radius: 8px;
     padding: 24px;
     margin: 240px auto;
 
@@ -26,7 +27,7 @@ body {
     padding: 0 auto;
     font-size: 24px;
     width: 540px;
-    height: 420px;
+    height: 300px;
 
 }
 
@@ -42,7 +43,7 @@ body {
     margin: 0 auto;
     background-color: #393E46;
     color: #F7F7F7;
-    padding: 4px;
+    padding: 5px 0;
     border: none;
     border: 1px solid #F7F7F7;
     border-radius: 8px;
@@ -52,12 +53,13 @@ body {
 
 .form p {
     margin: 0 auto;
+    margin-bottom: 30px;
 }
 
 .form p label {
-    width: 20%;
+    width: 25%;
 }
 
 .form p input {
-    width: 70%;
+    width: 65%;
 }

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head> </head>
+  <body>
+    <a id="logout" href="{% url 'test_rest_api:logout' %}"></a>
+    <script>
+      const logout = document.getElementById("logout");
+      logout.click();
+      window.location.replace("https://www.ikiningyou.com");
+    </script>
+  </body>
+</html>
