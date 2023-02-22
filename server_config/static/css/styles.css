@@ -22,10 +22,12 @@ body {
 .style-container {
     background-color: #393E46;
     color: #F7F7F7;
+    margin: 0 auto;
+    padding: 0 auto;
     font-size: 24px;
     width: 540px;
     height: 420px;
-    padding: 24px;
+
 }
 
 .style-title {
