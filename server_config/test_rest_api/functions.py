@@ -13,8 +13,8 @@ def save_user_storage(username):
     init_data = {
         'username':username,
         'tier':0,
-        'max_storage_size': 1024 * 1024 * 1024,
-        'used_storage_size' : 1024 * 1024 * 1024
+        'max_storage_size': 1024 * 1024 * 64,
+        'used_storage_size' : 1024 * 1024 * 64
     }
     serializer = UserStorageSerializer(data=init_data)
     if serializer.is_valid():
