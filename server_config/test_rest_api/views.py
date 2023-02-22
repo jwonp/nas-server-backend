@@ -2,6 +2,7 @@ from django.http.response import HttpResponse
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from server_config.users.models import User
 # from django.contrib.auth import authenticate,login as run_login, logout as run_logout
 from .functions import  save_user,save_user_storage
 
@@ -34,6 +35,9 @@ def getUser(request):
     
 @api_view(['POST'])
 def register(request):
+    user_count = len(User.objects.all())
+    if user_count > 5:
+        return HttpResponse(user_count,status=200)
     data = request.data
     username = data.get('user_id')
     save_user(data)
