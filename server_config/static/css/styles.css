@@ -52,6 +52,27 @@ body {
 }
 
 
+.form a {
+    cursor: pointer;
+    color: #F7F7F7;
+    text-decoration: none;
+}
+
+.form a:link {
+    color: #F7F7F7;
+}
+
+.form a:visited {
+    color: #F7F7F7;
+}
+
+.form a:hover {
+    color: #F7F7F7;
+}
+
+.form a:active {
+    color: #F7F7F7;
+}
 
 .form p {
     margin: 0 auto;
