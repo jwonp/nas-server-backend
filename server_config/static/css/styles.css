@@ -1,17 +1,31 @@
 body {
+    width: 100%;
+    height: 100%;
     background-color: #393E46;
+    color: #F7F7F7;
+    font-size: 24px;
 }
 
-.styles-wrapper {
+.style-wrapper {
+    width: 640px;
+    height: 480px;
     background-color: #393E46;
     border: 1px solid #F7F7F7;
-    color: #F7F7F7;
-    margin: 0 auto;
+    padding: 24px;
+    margin: 240px auto;
     width: 800px;
 }
 
-.styles-btn {
+.style-title {
+    padding: 20px;
+}
+
+.style-btn {
+    width: 240px;
+    height: 160px;
     background-color: #393E46;
-    color: #F7F7F7;
+    padding: 16px;
+    border: none;
+    border: 1px solid #F7F7F7;
     border-radius: 8px;
 }

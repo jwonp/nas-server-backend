@@ -1,21 +1,13 @@
+{% extends 'base.html' %} {% block title %} Login {% endblock %} {% block
+content %}
 
-{% extends 'base.html' %}
-
-{% block title %} Login {% endblock %}
-
-{% block content %}
-
-<div class="container style-wrapper">
-    <div class="card mt-5" style="width: 15rem;">
-        <div class="card-header">Ikiningyou</div>
-        <div class="card-body">
-            <form class="form" role="form" method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary styles-btn">Login</button>
-            </form>
-        </div>
-        </div>
-    </div>
+<div class="style-wrapper">
+  <div class="style-title">Ikiningyou</div>
+  <div class="style-form">
+    <form class="form" role="form" method="POST">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit" class="btn btn-primary styles-btn">Login</button>
+    </form>
+  </div>
 </div>
 {% endblock %}
