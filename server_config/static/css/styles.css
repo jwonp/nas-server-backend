@@ -59,9 +59,10 @@ body {
 
 
 .form a {
+    display: block;
     cursor: pointer;
     color: #F7F7F7;
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .form a:link {
@@ -74,6 +75,7 @@ body {
 
 .form a:hover {
     color: #F7F7F7;
+    text-decoration: none;
 }
 
 .form a:active {
