@@ -11,8 +11,10 @@
             <form class="form" role="form" method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="style-btn">로그인</button>
-                <a class="style-btn" href="https://www.ikiningyou.com/register/">회원가입</a>
+                <div>
+                    <button type="submit" class="style-btn">로그인</button>
+                    <a class="style-btn" href="https://www.ikiningyou.com/register/">회원가입</a>
+                </div>
             </form>
         </div>
         </div>
