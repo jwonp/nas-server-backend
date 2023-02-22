@@ -5,6 +5,7 @@ def save_user(data):
     user = User.objects.create_user(data.get('user_id'),data.get('user_email'),data.get('user_password'))
     user.last_name = data.get('user_last_name')
     user.first_name = data.get('user_first_name')
+    user.is_staff = True
     user.save()
     return 0
 
