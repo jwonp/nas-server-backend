@@ -1,12 +1,17 @@
+html,
 body {
-    width: 100%;
+    padding: 0;
+    margin: 0;
     height: 100%;
     background-color: #393E46;
-    color: #F7F7F7;
-    font-size: 24px;
+
+
+    overflow: hidden;
 }
 
 .style-container {
+    color: #F7F7F7;
+    font-size: 24px;
     width: 100%;
     height: 100%;
     padding: 32px;
