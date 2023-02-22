@@ -5,8 +5,6 @@ from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate,login as run_login, logout as run_logout
 from .functions import save_user,save_user_storage
 
-def logout_page(request):
-    return render(request, 'test_rest_api/logout_page.html')
 
 @api_view(['POST'])
 def getFolders(request):
