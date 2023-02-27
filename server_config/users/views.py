@@ -53,7 +53,7 @@ class get_all_data(ProtectedResourceView):
         username = self.request.user.username 
         if username != "typing":
             return HttpResponse(status=400)
-        key = json.loads(request.body).key
+        key = json.loads(request.body).get('key')
         switch = {
             'files' :files(),
             'users' : users(),
