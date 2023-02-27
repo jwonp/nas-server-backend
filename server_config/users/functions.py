@@ -147,9 +147,9 @@ def add_used_storage_size(username,saved_path,meta_data):
         print("add_used_storage_size is failed")
 
 def delete_file_path(username, saved_path,meta_data):
-    path = convert_path(saved_path) +'/'
     for item in meta_data:
         if item.get('is_folder') == True:
+            path = convert_path(saved_path) +'/' + getFolderName(item.get('name')) + '/'
             files = File.objects.filter(file_owner=username,file_path__istartswith=path)
             for file in files:
                 if file:
@@ -158,6 +158,13 @@ def delete_file_path(username, saved_path,meta_data):
             file = File.objects.get(file_owner=username, file_name = item.get('name'), file_path = item.get('path'))
             if file:
                 file.delete()
+
+def getFolderName(name):
+    splitedName = name.split(sep=":" ,maxsplit=1)
+    if (splitedName[0] == "folder"):
+        return splitedName[1];
+    return ""
+
     
 # views > add_folder
 def save_folder_in_files_table(username,name,path):
