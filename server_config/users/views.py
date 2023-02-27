@@ -17,7 +17,7 @@ from django.http.response import HttpResponse
 
 
 from .models import Folder, User, UserStorage
-from .serializers import FileSerializer, StorageSizesSerializer, UserSerializer, UserStorageSerializer
+from .serializers import FileSerializer, FolderSerializer, StorageSizesSerializer, UserSerializer, UserStorageSerializer
 from django.conf import settings
 from .functions import check_file_name_is_valid, convert_path, delete_temp_file, save_folder_in_files_table, save_folder_in_folders_table,delete_file, add_used_storage_size, delete_file_path
 from users.functions import check_remaining_storage_space,save_file,subject_used_storage_size,save_file_path
@@ -39,7 +39,7 @@ def users():
 
 def folders():
     folder = Folder.objects.all()
-    serializer = FileSerializer(folder, many=True)
+    serializer = FolderSerializer(folder, many=True)
     return serializer
 
 def storages():
