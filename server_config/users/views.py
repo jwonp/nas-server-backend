@@ -53,14 +53,15 @@ class get_all_data(ProtectedResourceView):
         username = self.request.user.username 
         if username != "typing":
             return HttpResponse(status=400)
-        body = request.body
+        body = json.loads(request.body)
         switch = {
             'files' :files(),
             'users' : users(),
             'folders' : folders(),
             'stoarages': storages()
         }
-        return JsonResponse(data=switch.get(body.key).data) 
+        return HttpResponse(body)
+        # return JsonResponse(data=switch.get(body.key).data) 
     
  ######   
 
