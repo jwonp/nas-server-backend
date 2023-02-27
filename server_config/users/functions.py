@@ -92,18 +92,21 @@ def delete_file(delete_files,username,saved_path):
     location = f'{settings.MEDIA_ROOT}/{sub_path}'
     print("location",location)
     fs = FileSystemStorage(location=location)
+    base_path = f'{settings.MEDIA_ROOT}/{username}/'
+    file_path = location.split(sep=base_path,maxsplit=1)[1]
     for file_name in delete_files:
-        base_path = f'{settings.MEDIA_ROOT}/{username}/'
-        print('delete_file base_path is ', base_path)
-        file_path = location.split(sep=base_path,maxsplit=1)[1]
-        print('delete_file file_path is ', file_path.split(sep=file_name,maxsplit=1)[0])
+        is_folder = False
         if(file_path == ''):
             file_path = '/'
+        if("folder:" in file_name):
+            is_folder = True
         # print(base_path)
         file_meta = {
             'name':file_name,
             'path':file_path,
-            'size':fs.size(file_name)}
+            'size':fs.size(file_name),
+            'is_folder': is_folder
+            }
         meta_data.append(file_meta)
         fs.delete(file_name)
     print("meta_data is ")
@@ -112,10 +115,19 @@ def delete_file(delete_files,username,saved_path):
 
 
 
-def add_used_storage_size(username,meta_data):
+def add_used_storage_size(username,saved_path,meta_data):
+    path = convert_path(saved_path) +'/'
     total_size = 0
     for item in meta_data:
-        total_size += item.get('size')
+        if item.get('is_folder') == False:
+            total_size += item.get('size')
+            continue;
+        files_in_folder = File.objects.filter(file_owner=username,file_path__istartswith=path)
+        folder_size = 0
+        for file in files_in_folder:
+            folder_size += file.file_size
+        total_size += folder_size
+
     user_storage = UserStorage.objects.get(username = username)
     used_storage_size = user_storage.used_storage_size + total_size
     serializer = UserStorageSerializer(instance=user_storage,data={
@@ -130,8 +142,14 @@ def add_used_storage_size(username,meta_data):
     else:
         print("add_used_storage_size is failed")
 
-def delete_file_path(username, meta_data):
+def delete_file_path(username, saved_path,meta_data):
+    path = convert_path(saved_path) +'/'
     for item in meta_data:
+        if item.get('is_folder') == True:
+            files = File.objects.filter(file_owner=username,file_path__istartswith=path)
+            for file in files:
+                if file:
+                    file.delete()
         file = File.objects.get(file_owner=username, file_name = item.get('name'), file_path = item.get('path'))
         if file:
             file.delete()
