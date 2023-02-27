@@ -16,8 +16,8 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 
 
-from .models import UserStorage
-from .serializers import StorageSizesSerializer
+from .models import Folder, User, UserStorage
+from .serializers import FileSerializer, StorageSizesSerializer, UserSerializer, UserStorageSerializer
 from django.conf import settings
 from .functions import check_file_name_is_valid, convert_path, delete_temp_file, save_folder_in_files_table, save_folder_in_folders_table,delete_file, add_used_storage_size, delete_file_path
 from users.functions import check_remaining_storage_space,save_file,subject_used_storage_size,save_file_path
@@ -25,7 +25,44 @@ from .serializers import FileListSerializer
 from .models import File
 
 
+# admin
 
+def files():
+    file = File.objects.all()
+    serializer = FileSerializer(file, many=True)
+    return serializer
+
+def users():
+    user = User.objects.all()
+    serializer = UserSerializer(user, many=True)
+    return serializer
+
+def folders():
+    folder = Folder.objects.all()
+    serializer = FileSerializer(folder, many=True)
+    return serializer
+
+def storages():
+    user_storage = UserStorage.objects.all()
+    serializer = UserStorageSerializer(user_storage, many=True)
+    return serializer
+
+class get_all_data(ProtectedResourceView):
+    permission_classes = [TokenHasReadWriteScope]
+    def post(self, request, *args, **kwargs):
+        username = self.request.user.username 
+        if username != "typing":
+            return HttpResponse(status=400)
+        body = json.loads(request.body)
+        switch = {
+            'files' :files(),
+            'users' : users(),
+            'folders' : folders(),
+            'stoarages': storages()
+        }
+        return JsonResponse(data=switch.get(body.key).data) 
+    
+ ######   
 
 class Validtoken(ProtectedResourceView):
     permission_classes = [TokenHasReadWriteScope]

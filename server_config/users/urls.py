@@ -1,7 +1,7 @@
 import oauth2_provider.views as oauth2_views
 from django.urls import path, include
 from django.conf import settings
-from .views import  Validtoken, add_folder,upload_files,get_file_list_by_path,get_storage_size,delete_files,download_files
+from . import views #  Validtoken, add_folder,upload_files,get_file_list_by_path,get_storage_size,delete_files,download_files
 from django.urls import path, include
 
 
@@ -30,11 +30,14 @@ if settings.DEBUG:
 
 urlpatterns = [
     path('o/', include((oauth2_endpoint_views, 'oauth2_provider'), namespace="oauth2_provider")),
-    path('uploadfiles/', upload_files.as_view()),
-    path('downloadfiles/', download_files.as_view()),
-    path('deletefiles/', delete_files.as_view()),
-    path('addfolder/', add_folder.as_view()),
-    path('getstoragesize/', get_storage_size.as_view()),
-    path('getfilelistbypath/<str:path>', get_file_list_by_path),
-    path('validtoken/',Validtoken.as_view()),
+    path('uploadfiles/', views.upload_files.as_view()),
+    path('downloadfiles/',  views.download_files.as_view()),
+    path('deletefiles/',  views.delete_files.as_view()),
+    path('addfolder/',  views.add_folder.as_view()),
+    path('getstoragesize/',  views.get_storage_size.as_view()),
+    path('getfilelistbypath/<str:path>',  views.get_file_list_by_path),
+    path('validtoken/', views.Validtoken.as_view()),
+    #admin
+    path('data/', views.get_all_data.as_view()),
+    
 ]

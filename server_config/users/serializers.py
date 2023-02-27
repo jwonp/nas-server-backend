@@ -1,9 +1,14 @@
 from rest_framework import serializers
-from .models import File, UserStorage,Folder
+from .models import File, User, UserStorage,Folder
 # first we define the serializers
 class UserStorageSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserStorage
+        fields = '__all__'
+        
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
         fields = '__all__'
         
 class UsedStorageSizeSerializer(serializers.ModelSerializer):
