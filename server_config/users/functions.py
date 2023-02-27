@@ -86,7 +86,7 @@ def save_file_path(meta_data,username):
 
 # views delete_files
 def delete_file(delete_files,username,saved_path):
-    path = convert_path(saved_path) +'/'
+    path = convert_path(saved_path)
     sub_path = f'{username}/{path}'
     meta_data = []
     location = f'{settings.MEDIA_ROOT}/{sub_path}'
