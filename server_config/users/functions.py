@@ -90,7 +90,7 @@ def delete_file(delete_files,username,saved_path):
     sub_path = f'{username}/{path}'
     meta_data = []
     location = f'{settings.MEDIA_ROOT}/{sub_path}'
-    print("location",location)
+    
     fs = FileSystemStorage(location=location)
     base_path = f'{settings.MEDIA_ROOT}/{username}/'
     file_path = location.split(sep=base_path,maxsplit=1)[1]
@@ -108,7 +108,11 @@ def delete_file(delete_files,username,saved_path):
             'is_folder': is_folder
             }
         meta_data.append(file_meta)
-        fs.delete(file_name)
+        try :
+            fs.delete(file_name)
+        except: 
+            print("No file")
+        
     print("meta_data is ")
     print(meta_data)
     return meta_data
@@ -122,6 +126,7 @@ def add_used_storage_size(username,saved_path,meta_data):
         if item.get('is_folder') == False:
             total_size += item.get('size')
             continue;
+        
         files_in_folder = File.objects.filter(file_owner=username,file_path__istartswith=path)
         folder_size = 0
         for file in files_in_folder:
