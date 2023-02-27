@@ -112,10 +112,8 @@ def delete_file(delete_files,username,saved_path):
             fs.delete(file_name)
         except: 
             print("No file")
-        
-    print("meta_data is ")
-    print(meta_data)
-    return meta_data
+        finally:
+            return meta_data
 
 
 
