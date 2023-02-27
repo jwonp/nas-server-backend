@@ -61,7 +61,7 @@ class get_all_data(ProtectedResourceView):
             'stoarages': storages()
         }
         serializer = switch.get(key)
-        return JsonResponse(data=serializer.data) 
+        return HttpResponse(data=serializer.data) 
     
  ######   
 
