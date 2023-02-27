@@ -60,8 +60,8 @@ class get_all_data(ProtectedResourceView):
             'folders' : folders(),
             'stoarages': storages()
         }
-        return HttpResponse(key)
-        # return JsonResponse(data=switch.get(body.key).data) 
+        
+        return JsonResponse(data=switch.get(key).data) 
     
  ######   
 
