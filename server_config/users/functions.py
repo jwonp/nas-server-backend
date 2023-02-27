@@ -108,12 +108,9 @@ def delete_file(delete_files,username,saved_path):
             'is_folder': is_folder
             }
         meta_data.append(file_meta)
-        try :
+        if is_folder == False:
             fs.delete(file_name)
-        except: 
-            print("No file")
-        finally:
-            return meta_data
+        return meta_data
 
 
 
