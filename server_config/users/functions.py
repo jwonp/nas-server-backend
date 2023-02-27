@@ -96,15 +96,19 @@ def delete_file(delete_files,username,saved_path):
     file_path = location.split(sep=base_path,maxsplit=1)[1]
     for file_name in delete_files:
         is_folder = False
+        file_size = 0
         if(file_path == ''):
             file_path = '/'
         if("folder:" in file_name):
             is_folder = True
+        else:
+            file_size = fs.size(file_name)
         # print(base_path)
+        
         file_meta = {
             'name':file_name,
             'path':file_path,
-            'size':fs.size(file_name),
+            'size':file_size,
             'is_folder': is_folder
             }
         meta_data.append(file_meta)
