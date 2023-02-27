@@ -154,9 +154,10 @@ def delete_file_path(username, saved_path,meta_data):
             for file in files:
                 if file:
                     file.delete()
-        file = File.objects.get(file_owner=username, file_name = item.get('name'), file_path = item.get('path'))
-        if file:
-            file.delete()
+        else :
+            file = File.objects.get(file_owner=username, file_name = item.get('name'), file_path = item.get('path'))
+            if file:
+                file.delete()
     
 # views > add_folder
 def save_folder_in_files_table(username,name,path):
