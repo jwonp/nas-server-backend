@@ -60,8 +60,8 @@ class get_all_data(ProtectedResourceView):
             'folders' : folders(),
             'stoarages': storages()
         }
-        
-        return JsonResponse(data=switch.get(key).data) 
+        serializer = switch.get(key)
+        return JsonResponse(data=serializer.data) 
     
  ######   
 
