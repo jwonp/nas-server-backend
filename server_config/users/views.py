@@ -17,9 +17,9 @@ from django.http.response import HttpResponse
 
 
 from .models import Folder, User, UserStorage
-from .serializers import FileSerializer, FolderSerializer, StorageSizesSerializer, UserSerializer, UserStorageSerializer
+from .serializers import StorageSizesSerializer
 from django.conf import settings
-from .functions import check_file_name_is_valid, convert_path, delete_temp_file, save_folder_in_files_table, save_folder_in_folders_table,delete_file, add_used_storage_size, delete_file_path
+from .functions import check_file_name_is_valid, convert_path, delete_temp_file, get_all_by_table_switch, get_delete_by_selected_switch, save_folder_in_files_table, save_folder_in_folders_table,delete_file, add_used_storage_size, delete_file_path
 from users.functions import check_remaining_storage_space,save_file,subject_used_storage_size,save_file_path
 from .serializers import FileListSerializer
 from .models import File
@@ -27,25 +27,10 @@ from .models import File
 
 # admin
 
-def files():
-    file = File.objects.all()
-    serializer = FileSerializer(file, many=True)
-    return serializer
 
-def users():
-    user = User.objects.all()
-    serializer = UserSerializer(user, many=True)
-    return serializer
 
-def folders():
-    folder = Folder.objects.all()
-    serializer = FolderSerializer(folder, many=True)
-    return serializer
 
-def storages():
-    user_storage = UserStorage.objects.all()
-    serializer = UserStorageSerializer(user_storage, many=True)
-    return serializer
+
 
 class get_all_data(ProtectedResourceView):
     permission_classes = [TokenHasReadWriteScope]
@@ -54,15 +39,24 @@ class get_all_data(ProtectedResourceView):
         if username != "typing":
             return HttpResponse(status=400)
         key = json.loads(request.body).get('key')
-        switch = {
-            'files' :files(),
-            'users' : users(),
-            'folders' : folders(),
-            'storages': storages()
-        }
+        switch = get_all_by_table_switch()
         serializer = switch.get(key)
         return HttpResponse(json.dumps(serializer.data)) 
     
+class delete_data_by_table(ProtectedResourceView):
+    permission_classes = [TokenHasReadWriteScope]
+    def post(self, request, *args, **kwargs):
+        username = self.request.user.username 
+        if username != "typing":
+            return HttpResponse(status=400)
+        table = json.loads(request.body).get('table')
+        selected_list = json.loads(request.body).get('selected')
+        
+        switch = get_delete_by_selected_switch(selected_list)
+        switch.get(table)
+        
+        result = get_all_by_table_switch().get(table)
+        return HttpResponse(json.dumps(result.data)) 
  ######   
 
 class Validtoken(ProtectedResourceView):

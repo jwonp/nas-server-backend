@@ -2,8 +2,67 @@ import datetime
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from .models import UserStorage,File
-from .serializers import FolderSerializer, UserStorageSerializer,UsedStorageSizeSerializer,FileSerializer
+from .models import Folder, User, UserStorage,File
+from .serializers import FolderSerializer, UserSerializer, UserStorageSerializer,UsedStorageSizeSerializer,FileSerializer
+
+def get_all_by_table_switch():
+    def get_all_files():
+        file = File.objects.all()
+        serializer = FileSerializer(file, many=True)
+        return serializer
+
+    def get_all_users():
+        user = User.objects.all()
+        serializer = UserSerializer(user, many=True)
+        return serializer
+
+    def get_all_folders():
+        folder = Folder.objects.all()
+        serializer = FolderSerializer(folder, many=True)
+        return serializer
+
+    def get_all_storages():
+        user_storage = UserStorage.objects.all()
+        serializer = UserStorageSerializer(user_storage, many=True)
+        return serializer
+    
+    switch = {
+        'files' :get_all_files(),
+        'users' : get_all_users(),
+        'folders' : get_all_folders(),
+        'storages': get_all_storages()
+    }
+    return switch
+
+def get_delete_by_selected_switch(selected_list):
+    def delete_selected_files(selected_list):
+        for selected in selected_list: 
+            file = File.objects.get(file_name=selected.get('file_name'),file_path=selected.get('file_path'),file_owner=selected.get('file_owner'))
+            file.delete()
+
+    def delete_selected_users(selected_list):
+        for selected in selected_list:
+            user = User.objects.get(id=selected.get('id'))
+            user.delete()
+
+    def delete_selected_folders(selected_list):
+        for selected in selected_list:
+            folder = Folder.objects.get(folder_id=selected.get('folder_id'))
+            folder.delete()
+
+    def delete_selected_storages(selected_list):
+        for selected in selected_list:
+            storage = UserStorage.objects.get(username=selected.get('username'))
+            storage.delete()
+            
+    switch = {
+            'files' :delete_selected_files(selected_list),
+            'users' : delete_selected_users(selected_list),
+            'folders' :delete_selected_folders(selected_list),
+            'storages': delete_selected_storages(selected_list)
+    }
+    return switch
+
 def get_user_id(username):
     user_data = UserStorage.objects.get(id=username)
     serializer = UserStorageSerializer(user_data, many=False)

@@ -39,5 +39,6 @@ urlpatterns = [
     path('validtoken/', views.Validtoken.as_view()),
     #admin
     path('data/', views.get_all_data.as_view()),
+    path('deletedata/', views.delete_data_by_table.as_view()),
     
 ]
