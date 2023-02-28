@@ -177,9 +177,12 @@ def delete_file(delete_files,username,saved_path):
             'is_folder': is_folder
             }
         meta_data.append(file_meta)
-        if is_folder == False:
+        try:
             fs.delete(file_name)
-        return meta_data
+        except FileNotFoundError:
+            print("FileNotFoundError")
+            continue
+    return meta_data
 
 
 
