@@ -26,7 +26,7 @@ from .models import File
 
 
 # admin
-class check_admin():
+class check_admin(ProtectedResourceView):
     def get(self, request, *args, **kwargs):
         username = self.request.user.username
         if username != "typing":
