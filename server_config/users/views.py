@@ -41,7 +41,8 @@ class get_all_data(ProtectedResourceView):
         key = json.loads(request.body).get('key')
         switch = get_all_by_table_switch()
         serializer = switch.get(key)
-        return HttpResponse(json.dumps(serializer.data)) 
+        result = json.dumps(serializer.data)
+        return HttpResponse(result) 
     
 class delete_data_by_table(ProtectedResourceView):
     permission_classes = [TokenHasReadWriteScope]
@@ -54,8 +55,9 @@ class delete_data_by_table(ProtectedResourceView):
         
         delete_by_selected(table=table,selected_list=selected_list)
         
-        result = get_all_by_table_switch().get(table)
-        return HttpResponse(json.dumps(result.data)) 
+        data = get_all_by_table_switch().get(table)
+        result = json.dumps(result.data)
+        return HttpResponse(result) 
  ######   
 
 class Validtoken(ProtectedResourceView):
