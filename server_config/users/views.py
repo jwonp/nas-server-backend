@@ -58,7 +58,7 @@ class get_all_data(ProtectedResourceView):
             'files' :files(),
             'users' : users(),
             'folders' : folders(),
-            'stoarages': storages()
+            'storages': storages()
         }
         serializer = switch.get(key)
         return HttpResponse(json.dumps(serializer.data)) 
