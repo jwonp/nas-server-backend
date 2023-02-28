@@ -55,8 +55,8 @@ class delete_data_by_table(ProtectedResourceView):
         
         delete_by_selected(table=table,selected_list=selected_list)
         
-        data = get_all_by_table_switch().get(table)
-        result = json.dumps(result.data)
+        serializer = get_all_by_table_switch().get(table)
+        result = json.dumps(serializer.data)
         return HttpResponse(result) 
  ######   
 
