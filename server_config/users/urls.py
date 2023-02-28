@@ -38,7 +38,7 @@ urlpatterns = [
     path('getfilelistbypath/<str:path>',  views.get_file_list_by_path),
     path('validtoken/', views.Validtoken.as_view()),
     #admin
-    path('checkadmin/', views.get_all_data.as_view()),
+    path('checkadmin/', views.check_admin.as_view()),
     path('data/', views.get_all_data.as_view()),
     path('deletedata/', views.delete_data_by_table.as_view()),
     
