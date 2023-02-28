@@ -35,31 +35,43 @@ def get_all_by_table_switch():
 
 def delete_selected_files(selected_list):
     for selected in selected_list: 
-        file = File.objects.get(file_name=selected.get('file_name'),file_path=selected.get('file_path'),file_owner=selected.get('file_owner'))
-        file.delete()
+        try:
+            file = File.objects.get(file_name=selected.get('file_name'),file_path=selected.get('file_path'),file_owner=selected.get('file_owner'))
+            file.delete()
+        except file.DoesNotExist:
+            file = None
 
 def delete_selected_users(selected_list):
     for selected in selected_list:
-        user = User.objects.get(username=selected.get('username'))
-        user.delete()
+        try:
+            user = User.objects.get(username=selected.get('username'))
+            user.delete()
+        except user.DoesNotExist:
+            user = None
 
 def delete_selected_folders(selected_list):
     for selected in selected_list:
-        folder = Folder.objects.get(folder_id=selected.get('folder_id'))
-        folder.delete()
+        try:
+            folder = Folder.objects.get(folder_id=selected.get('folder_id'))
+            folder.delete()
+        except folder.DoesNotExist:
+            folder = None
 
 def delete_selected_storages(selected_list):
     for selected in selected_list:
-        storage = UserStorage.objects.get(username=selected.get('username'))
-        storage.delete()
+        try:
+            storage = UserStorage.objects.get(username=selected.get('username'))
+            storage.delete()
+        except folder.DoesNotExist:
+            folder = None
         
 def get_delete_by_selected_switch(selected_list):
 
     switch = {
-            'files' :delete_selected_files(selected_list),
-            'users' : delete_selected_users(selected_list),
-            'folders' :delete_selected_folders(selected_list),
-            'storages': delete_selected_storages(selected_list)
+        'files' :delete_selected_files(selected_list),
+        'users' : delete_selected_users(selected_list),
+        'folders' :delete_selected_folders(selected_list),
+        'storages': delete_selected_storages(selected_list)
     }
     return switch
 
