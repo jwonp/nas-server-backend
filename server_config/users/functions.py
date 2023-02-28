@@ -40,7 +40,7 @@ def delete_selected_files(selected_list):
 
 def delete_selected_users(selected_list):
     for selected in selected_list:
-        user = User.objects.get(id=selected.get('id'))
+        user = User.objects.get(username=selected.get('username'))
         user.delete()
 
 def delete_selected_folders(selected_list):
