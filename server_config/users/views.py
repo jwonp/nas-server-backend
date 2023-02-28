@@ -16,10 +16,10 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 
 
-from .models import Folder, User, UserStorage
+from .models import  UserStorage
 from .serializers import StorageSizesSerializer
 from django.conf import settings
-from .functions import check_file_name_is_valid, convert_path, delete_temp_file, get_all_by_table_switch, get_delete_by_selected_switch, save_folder_in_files_table, save_folder_in_folders_table,delete_file, add_used_storage_size, delete_file_path
+from .functions import check_file_name_is_valid, convert_path, delete_by_selected, delete_temp_file, get_all_by_table_switch, save_folder_in_files_table, save_folder_in_folders_table,delete_file, add_used_storage_size, delete_file_path
 from users.functions import check_remaining_storage_space,save_file,subject_used_storage_size,save_file_path
 from .serializers import FileListSerializer
 from .models import File
@@ -52,8 +52,7 @@ class delete_data_by_table(ProtectedResourceView):
         table = json.loads(request.body).get('table')
         selected_list = json.loads(request.body).get('selected')
         
-        switch = get_delete_by_selected_switch(selected_list)
-        switch.get(table)
+        delete_by_selected(table=table,selected_list=selected_list)
         
         result = get_all_by_table_switch().get(table)
         return HttpResponse(json.dumps(result.data)) 

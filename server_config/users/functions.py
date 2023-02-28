@@ -5,9 +5,9 @@ from django.core.files.storage import FileSystemStorage
 from .models import Folder, User, UserStorage,File
 from .serializers import FolderSerializer, UserSerializer, UserStorageSerializer,UsedStorageSizeSerializer,FileSerializer
 def get_all_files():
-        file = File.objects.all()
-        serializer = FileSerializer(file, many=True)
-        return serializer
+    file = File.objects.all()
+    serializer = FileSerializer(file, many=True)
+    return serializer
 
 def get_all_users():
     user = User.objects.all()
@@ -35,45 +35,39 @@ def get_all_by_table_switch():
 
 def delete_selected_files(selected_list):
     for selected in selected_list: 
-        try:
-            file = File.objects.get(file_name=selected.get('file_name'),file_path=selected.get('file_path'),file_owner=selected.get('file_owner'))
-            file.delete()
-        except file.DoesNotExist:
-            file = None
+        file = File.objects.get(file_name=selected.get('file_name'),file_path=selected.get('file_path'),file_owner=selected.get('file_owner'))
+        file.delete()
+
 
 def delete_selected_users(selected_list):
     for selected in selected_list:
-        try:
-            user = User.objects.get(username=selected.get('username'))
-            user.delete()
-        except user.DoesNotExist:
-            user = None
+        user = User.objects.get(username=selected.get('username'))
+        user.delete()
 
 def delete_selected_folders(selected_list):
     for selected in selected_list:
-        try:
-            folder = Folder.objects.get(folder_id=selected.get('folder_id'))
-            folder.delete()
-        except folder.DoesNotExist:
-            folder = None
+        folder = Folder.objects.get(folder_id=selected.get('folder_id'))
+        folder.delete()
+
 
 def delete_selected_storages(selected_list):
     for selected in selected_list:
-        try:
-            storage = UserStorage.objects.get(username=selected.get('username'))
-            storage.delete()
-        except folder.DoesNotExist:
-            folder = None
-        
-def get_delete_by_selected_switch(selected_list):
+        storage = UserStorage.objects.get(username=selected.get('username'))
+        storage.delete()
 
-    switch = {
-        'files' :delete_selected_files(selected_list),
-        'users' : delete_selected_users(selected_list),
-        'folders' :delete_selected_folders(selected_list),
-        'storages': delete_selected_storages(selected_list)
-    }
-    return switch
+        
+def delete_by_selected(table,selected_list):
+    if table == 'files':
+        delete_selected_files(selected_list)
+    elif table == 'users':
+        delete_selected_users(selected_list)
+    elif table == 'folders':  
+        delete_selected_folders(selected_list)
+    elif table == 'storages':
+        delete_selected_storages(selected_list)
+    else:
+        return
+
 
 def get_user_id(username):
     user_data = UserStorage.objects.get(id=username)
