@@ -26,11 +26,7 @@ from .models import File
 
 
 # admin
-
-
-
 class check_admin():
-    permission_classes = [TokenHasReadWriteScope]
     def get(self, request, *args, **kwargs):
         username = self.request.user.username
         if username != "typing":
