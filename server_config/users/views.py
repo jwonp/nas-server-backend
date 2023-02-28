@@ -29,7 +29,13 @@ from .models import File
 
 
 
-
+class check_admin():
+    permission_classes = [TokenHasReadWriteScope]
+    def get(self, request, *args, **kwargs):
+        username = self.request.user.username
+        if username != "typing":
+            return HttpResponse(status=400)
+        return HttpResponse(status=200)
 
 
 class get_all_data(ProtectedResourceView):
