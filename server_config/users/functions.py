@@ -252,7 +252,7 @@ def delete_file_path(username,meta_data):
         
         if item.get('is_folder') == True:
             path = item.get('path')
-            files = File.objects.filter(file_owner=username, file_path__startswith=f'{path}/{name}/')
+            files = File.objects.filter(file_owner=username, file_path__startswith=f'{path}{name}/')
             serializer = FileSerializer(files, many=True)
             meta_set.append(serializer.data)
             for file in files:
