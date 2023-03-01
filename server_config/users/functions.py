@@ -248,19 +248,23 @@ def add_used_storage_size(username,saved_path,meta_data):
 def delete_file_path(username, saved_path,meta_data):
     converted_path = convert_path(saved_path)
     for item in meta_data:
-        folder_name = item.get('name')
+        name = item.get('name')
         if item.get('is_folder') == True:
             path = root_path_slash(converted_path) +  converted_path +'/' + getFolderName(item.get('name')) + '/'
             files = File.objects.filter(file_owner=username,file_path__istartswith=path)
             for file in files:
                 if file:
                     file.delete()
-            folder = Folder.objects.get(owner=username,folder_name=f'folder:{folder_name}',base_path=item.get('path'))
+            folder = Folder.objects.get(owner=username,folder_name=f'folder:{name}',base_path=item.get('path'))
             if folder:
                 folder.delete()
-        file = File.objects.get(file_owner=username, file_name =f'folder:{folder_name}', file_path = item.get('path'))
-        if file:
-            file.delete()
+            file = File.objects.get(file_owner=username, file_name =f'folder:{name}', file_path = item.get('path'))
+            if file:
+                file.delete()
+        else:
+            file = File.objects.get(file_owner=username,file_name =name,file_path = item.get('path'))
+            if file:
+                file.delete()
 
 def getFolderName(name):
     splitedName = name.split(sep=":" ,maxsplit=1)
