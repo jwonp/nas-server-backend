@@ -250,7 +250,7 @@ def delete_file_path(username, saved_path,meta_data):
     for item in meta_data:
         name = item.get('name')
         if item.get('is_folder') == True:
-            path = root_path_slash(converted_path) +  converted_path +'/' + getFolderName(item.get('name')) + '/'
+            path =  converted_path +'/' + getFolderName(item.get('name')) + '/'
             files = File.objects.filter(file_owner=username,file_path__startswith=path)
             for file in files:
                 if file:
