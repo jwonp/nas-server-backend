@@ -182,7 +182,7 @@ def delete_file(delete_files,username,saved_path):
         splited_location = location.split(sep=base_path,maxsplit=1)[1]
     
     #file_path = "/" or "/a/b/c/"
-    file_path = root_path_slash(splited_location) + splited_location + '/'
+    file_path = root_slash + path + '/'
     for file_name in delete_files:
         is_folder = False
         file_size = 0
@@ -190,7 +190,6 @@ def delete_file(delete_files,username,saved_path):
             is_folder = True
         else:
             file_size = fs.size(file_name)
-        
         
         file_meta = {
             'name':file_name,
