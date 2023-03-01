@@ -101,7 +101,7 @@ class delete_files(ProtectedResourceView):
         
         meta_data = delete_file(delete_files=file_list,username=username,saved_path=path)
         add_used_storage_size(username=username,saved_path=path,meta_data=meta_data)
-        delete_file_path(username=username,saved_path=path,meta_data=meta_data)
+        delete_file_path(username=username,meta_data=meta_data)
         return HttpResponse(json.dumps(meta_data))
 
 class get_storage_size(ProtectedResourceView):
