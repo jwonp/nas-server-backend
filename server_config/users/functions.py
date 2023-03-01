@@ -254,10 +254,12 @@ def delete_file_path(username, saved_path,meta_data):
             for file in files:
                 if file:
                     file.delete()
-        else :
-            file = File.objects.get(file_owner=username, file_name = item.get('name'), file_path = item.get('path'))
-            if file:
-                file.delete()
+            folder = Folder.objects.get(owner=username,folder_name=item.get('name'),base_path=item.get('path'))
+            if folder:
+                folder.delete()
+        file = File.objects.get(file_owner=username, file_name = item.get('name'), file_path = item.get('path'))
+        if file:
+            file.delete()
 
 def getFolderName(name):
     splitedName = name.split(sep=":" ,maxsplit=1)
@@ -273,7 +275,7 @@ def save_folder_in_files_table(username,name,path):
             'file_path':path,
             'file_upload_date':datetime.datetime.now(),
             'file_owner':username,
-            'file_size':-1
+            'file_size':0
     })
     if serializer.is_valid():
         print("save_folder_in_files_table")
