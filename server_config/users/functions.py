@@ -289,14 +289,8 @@ def save_folder_in_folders_table(username,name,path):
 
 # for export 
 def convert_path(path):
-    print(f'before {path}')
-    if (path == "/storage"):
-        path = path + '/내_드라이브'
-    print(f'after {path}')
     base_path = '내_드라이브'
-    
-    splited_path = path.split(sep='/',maxsplit=2)[2]
-    print('splited_path is ', splited_path)
+    splited_path = path.split('/storage/',maxsplit=1)[1]
     if(base_path == splited_path):
         result = ""
     else:
