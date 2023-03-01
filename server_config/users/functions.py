@@ -1,4 +1,5 @@
 import datetime
+import os
 import shutil
 
 from django.conf import settings
@@ -176,11 +177,11 @@ def delete_file(delete_files,username,saved_path):
     location = f'{settings.MEDIA_ROOT}/{sub_path}'
     
     fs = FileSystemStorage(location=location)
-    base_path = f'{settings.MEDIA_ROOT}/{username}'
-    if(base_path == location):
-        splited_location = ""
-    else:
-        splited_location = location.split(sep=base_path,maxsplit=1)[1]
+    # base_path = f'{settings.MEDIA_ROOT}/{username}'
+    # if(base_path == location):
+    #     splited_location = ""
+    # else:
+    #     splited_location = location.split(sep=base_path,maxsplit=1)[1]
     
     #file_path = "/" or "/a/b/c/"
     file_path = root_slash + path + '/'
@@ -190,6 +191,9 @@ def delete_file(delete_files,username,saved_path):
         name = file_name
         if("folder:" in name):
             is_folder = True
+            name = name.split(sep="folder:",maxsplit=1)[1]
+            for file in os.scandir(f'{settings.MEDIA_ROOT}/{sub_path}/{name}'):
+                file_size+=os.path.getsize(file)
         else:
             file_size = fs.size(name)
         
@@ -202,8 +206,7 @@ def delete_file(delete_files,username,saved_path):
         meta_data.append(file_meta)
         
         try:
-            if("folder:" in name):
-                name = name.split(sep="folder:",maxsplit=1)[1]
+            if is_folder:
                 shutil.rmtree(path=f'{settings.MEDIA_ROOT}/{sub_path}/{name}')
             else :
                 fs.delete(name)
@@ -215,18 +218,19 @@ def delete_file(delete_files,username,saved_path):
 
 
 def add_used_storage_size(username,saved_path,meta_data):
-    path = convert_path(saved_path) +'/'
+    # path = convert_path(saved_path) +'/'
     total_size = 0
     for item in meta_data:
-        if item.get('is_folder') == False:
-            total_size += item.get('size')
-            continue;
+        total_size += item.get('size')
+        # if item.get('is_folder') == False:
+            # total_size += item.get('size')
+        #     continue;
         
-        files_in_folder = File.objects.filter(file_owner=username,file_path__istartswith=path)
-        folder_size = 0
-        for file in files_in_folder:
-            folder_size += file.file_size
-        total_size += folder_size
+        # files_in_folder = File.objects.filter(file_owner=username,file_path__istartswith=path)
+        # folder_size = 0
+        # for file in files_in_folder:
+        #     folder_size += file.file_size
+        # total_size += folder_size
 
     user_storage = UserStorage.objects.get(username = username)
     used_storage_size = user_storage.used_storage_size + total_size
