@@ -1,4 +1,5 @@
 import datetime
+import shutil
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
@@ -199,10 +200,13 @@ def delete_file(delete_files,username,saved_path):
             'is_folder': is_folder
             }
         meta_data.append(file_meta)
-        if("folder:" in name):
-            name = name.split(sep="folder:",maxsplit=1)[1]
+        
         try:
-            fs.delete(name)
+            if("folder:" in name):
+                name = name.split(sep="folder:",maxsplit=1)[1]
+                shutil.rmtree(path=f'{settings.MEDIA_ROOT}/{sub_path}/{name}')
+            else :
+                fs.delete(name)
         except FileNotFoundError:
             print("FileNotFoundError")
             continue
