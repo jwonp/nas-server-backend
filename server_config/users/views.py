@@ -117,12 +117,13 @@ class add_folder(ProtectedResourceView):
     def post(self, request, *args, **kwargs):
         body = json.loads(request.body)
         path= convert_path(parse.unquote(body.get('path')))
-        
+        folder_name = parse.unquote(body.get('folder_name'))
         # if path is root: "" + "" + "/"
         # else : "/" + "a/b/c" + "/"
         converted_path = root_path_slash(path) + path +'/'
         username = self.request.user.username
-        name = "folder:"+parse.unquote(body.get('folder_name'))
+        os.mkdir(f'{settings.MEDIA_ROOT}/{username}/{folder_name}')
+        name = "folder:"+ folder_name
 
         is_ok_files = save_folder_in_files_table(username=username,name=name,path=converted_path)
         is_ok_folders = save_folder_in_folders_table(username=username,name=name,path=converted_path)
