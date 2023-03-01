@@ -19,7 +19,7 @@ from django.http.response import HttpResponse
 from .models import  UserStorage
 from .serializers import StorageSizesSerializer
 from django.conf import settings
-from .functions import check_file_name_is_valid, convert_path, delete_by_selected, delete_temp_file, get_all_by_table_switch, save_folder_in_files_table, save_folder_in_folders_table,delete_file, add_used_storage_size, delete_file_path
+from .functions import check_file_name_is_valid, convert_path, delete_by_selected, delete_temp_file, get_all_by_table_switch, root_path_slash, save_folder_in_files_table, save_folder_in_folders_table,delete_file, add_used_storage_size, delete_file_path
 from users.functions import check_remaining_storage_space,save_file,subject_used_storage_size,save_file_path
 from .serializers import FileListSerializer
 from .models import File
@@ -74,7 +74,9 @@ class upload_files(ProtectedResourceView):
         upload_files = request.FILES.getlist("files")
         username = request.user.username
         save_path = parse.unquote(request.GET.get('File-Path'))
-
+        # save_path 
+        # Ex1) /storage/내_드라이브
+        # Ex2) /storage/a/b/c
         meta_data = []
         files = check_file_name_is_valid(upload_files)
         result_remaining_size = check_remaining_storage_space(upload_files=files, username=username)
@@ -95,7 +97,6 @@ class delete_files(ProtectedResourceView):
         body = json.loads(request.body)
         file_list = body.get('file_list')
         path =parse.unquote( body.get('path'))
-        print('path is ', path)
         username = request.user.username
         
         meta_data = delete_file(delete_files =file_list,username = username,saved_path = path)
@@ -115,8 +116,11 @@ class get_storage_size(ProtectedResourceView):
 class add_folder(ProtectedResourceView):
     def post(self, request, *args, **kwargs):
         body = json.loads(request.body)
-        path= parse.unquote(body.get('path'))
-        converted_path = convert_path(path) +'/'
+        path= convert_path(parse.unquote(body.get('path')))
+        
+        # if path is root: "" + "" + "/"
+        # else : "/" + "a/b/c" + "/"
+        converted_path = root_path_slash(path) + path +'/'
         username = self.request.user.username
         name = "folder:"+parse.unquote(body.get('folder_name'))
 
@@ -131,9 +135,12 @@ class download_files(ProtectedResourceView):
         path =convert_path(parse.unquote(body.get('path')))
         username = self.request.user.username
         file_list = body.get('file_list')
+        # sub_path
+        # if path is root path: username/
+        # else: username/a/b/c
         sub_path = f'{username}/{path}'
-      
-        os.chdir(f'{settings.MEDIA_ROOT}/{sub_path}/')
+        root_slash = root_path_slash(path)
+        os.chdir(f'{settings.MEDIA_ROOT}/{sub_path}{root_slash}')
         fs = FileSystemStorage(location=f'{settings.MEDIA_ROOT}/temp')
         with zipfile.ZipFile(f'{settings.MEDIA_ROOT}/temp/{username}.zip', 'w') as file_list_zip:
             for file in file_list:
@@ -151,10 +158,14 @@ def get_file_list_by_path(request,path):
     username = request.user.username
     file_path = path
     file_path = file_path.replace("&","/")
+    # Ex1) 내_드라이브
+    # Ex2) a%b%c => a/b/c
     if(file_path == '내_드라이브'):
+        # /
         file_path = "/"
     else:
-        file_path = file_path + '/'
+        # /a/b/c/
+        file_path = '/'+file_path + '/'
     file_list = File.objects.filter(file_path=file_path, file_owner=username)
     serializer = FileListSerializer(file_list, many=True)
     return Response(serializer.data)

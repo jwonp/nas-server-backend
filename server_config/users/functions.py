@@ -97,9 +97,14 @@ def check_remaining_storage_space(upload_files, username):
         return {'total_file_size':-1 ,'used_storage_size':used_storage_size}
 
 def save_file(upload_files,username,save_path):
-    path = convert_path(save_path)  
+    # if path is root path: path = ""
+    # else: path = "a/b/c"
+    path = convert_path(save_path)
+    # if path is root path:
+    #   sub_path = "username"
+    # else:
+    #   sub_path = "username/a/b/c"
     sub_path = f'{username}/{path}'
-    print("sub path is " ,sub_path)
     fs = FileSystemStorage(location=f'{settings.MEDIA_ROOT}/{sub_path}')
     result_meta_data = []
     
@@ -110,7 +115,11 @@ def save_file(upload_files,username,save_path):
         file_path_list = file_path.split('/')
         username_index = file_path_list.index(username)+1
         file_path_list = file_path_list[username_index:-1]
-        file_path = "/".join(file_path_list)+'/'
+        if len(file_path_list) == 0:
+            root_slash = ""
+        else:
+            root_slash = "/"
+        file_path = root_slash + "/".join(file_path_list)+'/'
         
         result_meta_data.append({
             'name':file_name,
@@ -151,19 +160,29 @@ def save_file_path(meta_data,username):
 
 # views delete_files
 def delete_file(delete_files,username,saved_path):
+    # if path is root path: path = ""
+    # else: path = "a/b/c"
     path = convert_path(saved_path)
-    sub_path = f'{username}/{path}'
+    root_slash = root_path_slash(path)
+    sub_path = f'{username}{root_slash}{path}'
     meta_data = []
+    # if path is root path: 
+    #   sub_path = "username"
+    #   location = "...MEDIA_ROOT/username"
+    # else:
+    #   sub_path = "username/a/b/c"
+    #   location = "...MEDIA_ROOT/username/a/b/c"
     location = f'{settings.MEDIA_ROOT}/{sub_path}'
     
     fs = FileSystemStorage(location=location)
     base_path = f'{settings.MEDIA_ROOT}/{username}/'
-    file_path = location.split(sep=base_path,maxsplit=1)[1]
+    splited_location = location.split(sep=base_path,maxsplit=1)[1]
+    
+    #file_path = "/" or "/a/b/c/"
+    file_path = root_path_slash(splited_location) + splited_location + '/'
     for file_name in delete_files:
         is_folder = False
         file_size = 0
-        if(file_path == ''):
-            file_path = '/'
         if("folder:" in file_name):
             is_folder = True
         else:
@@ -215,9 +234,10 @@ def add_used_storage_size(username,saved_path,meta_data):
         print("add_used_storage_size is failed")
 
 def delete_file_path(username, saved_path,meta_data):
+    converted_path = convert_path(saved_path)
     for item in meta_data:
         if item.get('is_folder') == True:
-            path = convert_path(saved_path) +'/' + getFolderName(item.get('name')) + '/'
+            path = root_path_slash(converted_path) +  converted_path +'/' + getFolderName(item.get('name')) + '/'
             files = File.objects.filter(file_owner=username,file_path__istartswith=path)
             for file in files:
                 if file:
@@ -236,7 +256,6 @@ def getFolderName(name):
     
 # views > add_folder
 def save_folder_in_files_table(username,name,path):
-    print(f'{username} and {name} and {path}')
     serializer = FileSerializer(data={
             'file_name':name,
             'file_path':path,
@@ -249,6 +268,7 @@ def save_folder_in_files_table(username,name,path):
         serializer.save()
         return True
     return False
+
 def save_folder_in_folders_table(username,name,path):
     serializer = FolderSerializer(data={
             'folder_name':name,
@@ -285,3 +305,7 @@ def delete_temp_file(username):
     file_name = f'{username}.zip'
     fs = FileSystemStorage(location=location)
     fs.delete(file_name)
+
+def root_path_slash(path):
+    if(path == ""): return ""
+    else : return "/"

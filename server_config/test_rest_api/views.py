@@ -18,20 +18,6 @@ def getUser(request):
     print(request.user.username)
     return Response(request.user.username)
 
-# @api_view(['POST'])
-# def submitLogin(request):
-#     data = request.data 
-#     username = data.get('user_id')
-#     password = data.get('user_password')
-    
-#     user = authenticate(request, username=username, password=password)
-#     if user is not None:
-#         print("success to login")
-#         run_login(request,user)
-#         return HttpResponse(status=200)
-#     else:
-#         print("fail to login")
-#     return HttpResponse(status=401) 
     
 @api_view(['POST'])
 def register(request):
