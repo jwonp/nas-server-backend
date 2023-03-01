@@ -148,7 +148,6 @@ def subject_used_storage_size(username,remaining_size):
 
 def save_file_path(meta_data,username):
     for item in meta_data:
-        print(item.get('name'))
         serializer = FileSerializer(data={
             'file_name':item.get('name'),
             'file_path':item.get('path'),
