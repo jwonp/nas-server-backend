@@ -96,12 +96,12 @@ class delete_files(ProtectedResourceView):
     def post(self,request,*args,**kwargs):
         body = json.loads(request.body)
         file_list = body.get('file_list')
-        path =parse.unquote( body.get('path'))
+        path =parse.unquote(body.get('path'))
         username = request.user.username
         
-        meta_data = delete_file(delete_files =file_list,username = username,saved_path = path)
-        add_used_storage_size(username= username,saved_path = path,meta_data=meta_data )
-        delete_file_path(username= username, saved_path = path,meta_data=meta_data )
+        meta_data = delete_file(delete_files=file_list,username=username,saved_path=path)
+        add_used_storage_size(username=username,saved_path=path,meta_data=meta_data)
+        delete_file_path(username=username,saved_path=path,meta_data=meta_data)
         return HttpResponse(json.dumps(meta_data))
 
 class get_storage_size(ProtectedResourceView):
@@ -109,7 +109,7 @@ class get_storage_size(ProtectedResourceView):
         username = self.request.user.username
         delete_temp_file(username)
         storage_sizes = UserStorage.objects.get(username=username)
-        serializer = StorageSizesSerializer(storage_sizes, many=False)
+        serializer = StorageSizesSerializer(storage_sizes,many=False)
         return JsonResponse(data=serializer.data)
         
 
