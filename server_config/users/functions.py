@@ -186,20 +186,23 @@ def delete_file(delete_files,username,saved_path):
     for file_name in delete_files:
         is_folder = False
         file_size = 0
-        if("folder:" in file_name):
+        name = file_name
+        if("folder:" in name):
             is_folder = True
         else:
-            file_size = fs.size(file_name)
+            file_size = fs.size(name)
         
         file_meta = {
-            'name':file_name,
+            'name':name,
             'path':file_path,
             'size':file_size,
             'is_folder': is_folder
             }
         meta_data.append(file_meta)
+        if("folder:" in name):
+            name = name.split(sep="folder:",maxsplit=1)[1]
         try:
-            fs.delete(file_name)
+            fs.delete(name)
         except FileNotFoundError:
             print("FileNotFoundError")
             continue
