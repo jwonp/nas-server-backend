@@ -245,24 +245,25 @@ def add_used_storage_size(username,saved_path,meta_data):
     else:
         print("add_used_storage_size is failed")
 
-def delete_file_path(username, saved_path,meta_data):
-    converted_path = convert_path(saved_path)
+def delete_file_path(username,meta_data):
+    
     for item in meta_data:
         name = item.get('name')
+        
         if item.get('is_folder') == True:
-            path =  converted_path +'/' + getFolderName(item.get('name')) + '/'
-            files = File.objects.filter(file_owner=username,file_path__startswith=path)
+            path = item.get('path')
+            files = File.objects.filter(file_owner=username,file_path__startswith=f'{path}/{name}')
             for file in files:
                 if file:
                     file.delete()
-            folder = Folder.objects.get(owner=username,folder_name=f'folder:{name}',base_path=item.get('path'))
+            folder = Folder.objects.get(owner=username,folder_name=f'folder:{name}',base_path=path)
             if folder:
                 folder.delete()
-            file = File.objects.get(file_owner=username, file_name =f'folder:{name}', file_path = item.get('path'))
+            file = File.objects.get(file_owner=username, file_name =f'folder:{name}', file_path = path)
             if file:
                 file.delete()
         else:
-            file = File.objects.get(file_owner=username,file_name =name,file_path = item.get('path'))
+            file = File.objects.get(file_owner=username,file_name =name,file_path =path)
             if file:
                 file.delete()
 
