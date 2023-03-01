@@ -175,8 +175,11 @@ def delete_file(delete_files,username,saved_path):
     location = f'{settings.MEDIA_ROOT}/{sub_path}'
     
     fs = FileSystemStorage(location=location)
-    base_path = f'{settings.MEDIA_ROOT}/{username}/'
-    splited_location = location.split(sep=base_path,maxsplit=1)[1]
+    base_path = f'{settings.MEDIA_ROOT}/{username}'
+    if(base_path == location):
+        splited_location = ""
+    else:
+        splited_location = location.split(sep=base_path,maxsplit=1)[1]
     
     #file_path = "/" or "/a/b/c/"
     file_path = root_path_slash(splited_location) + splited_location + '/'
@@ -187,7 +190,7 @@ def delete_file(delete_files,username,saved_path):
             is_folder = True
         else:
             file_size = fs.size(file_name)
-        # print(base_path)
+        
         
         file_meta = {
             'name':file_name,
