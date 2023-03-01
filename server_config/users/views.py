@@ -120,9 +120,10 @@ class add_folder(ProtectedResourceView):
         folder_name = parse.unquote(body.get('folder_name'))
         # if path is root: "" + "" + "/"
         # else : "/" + "a/b/c" + "/"
-        converted_path = root_path_slash(path) + path +'/'
+        root_slash = root_path_slash(path)
+        converted_path = root_slash + path +'/'
         username = self.request.user.username
-        os.mkdir(f'{settings.MEDIA_ROOT}/{username}/{folder_name}')
+        os.mkdir(f'{settings.MEDIA_ROOT}/{username}/{path}{root_slash}{folder_name}')
         name = "folder:"+ folder_name
 
         is_ok_files = save_folder_in_files_table(username=username,name=name,path=converted_path)
