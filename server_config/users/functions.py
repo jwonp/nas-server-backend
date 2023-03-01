@@ -246,13 +246,15 @@ def add_used_storage_size(username,saved_path,meta_data):
         print("add_used_storage_size is failed")
 
 def delete_file_path(username,meta_data):
-    
+    meta_set = []
     for item in meta_data:
         name = item.get('name')
         
         if item.get('is_folder') == True:
             path = item.get('path')
-            files = File.objects.filter(file_owner=username,file_path__startswith=f'{path}/{name}')
+            files = File.objects.filter(file_owner=username, file_path__startswith=f'{path}/{name}/')
+            serializer = FileSerializer(files, many=True)
+            meta_set.append(serializer.data)
             for file in files:
                 if file:
                     file.delete()
@@ -266,6 +268,7 @@ def delete_file_path(username,meta_data):
             file = File.objects.get(file_owner=username,file_name =name,file_path =path)
             if file:
                 file.delete()
+    return meta_set
 
 def getFolderName(name):
     splitedName = name.split(sep=":" ,maxsplit=1)
