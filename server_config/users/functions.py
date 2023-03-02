@@ -249,9 +249,8 @@ def delete_file_path(username,meta_data):
     meta_set = []
     for item in meta_data:
         name = item.get('name')
-        
+        path = item.get('path')
         if item.get('is_folder') == True:
-            path = item.get('path')
             # 목포 폴더 내 하위 파일, 폴더 삭제
             files = File.objects.filter(file_owner=username, file_path__startswith=f'{path}{name}/')
             for file in files:
