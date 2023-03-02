@@ -252,12 +252,16 @@ def delete_file_path(username,meta_data):
         
         if item.get('is_folder') == True:
             path = item.get('path')
+            # 목포 폴더 내 하위 파일, 폴더 삭제
             files = File.objects.filter(file_owner=username, file_path__startswith=f'{path}{name}/')
-            serializer = FileSerializer(files, many=True)
-            meta_set.append(serializer.data)
             for file in files:
                 if file:
                     file.delete()
+            folders = Folder.objects.filter(owner=username,base_path__startswith=f'{path}{name}/')
+            for folder in folders:
+                if folder:
+                    folder.delete()
+            # 목표 폴더 삭제
             folder = Folder.objects.get(owner=username,folder_name=f'folder:{name}',base_path=path)
             if folder:
                 folder.delete()
