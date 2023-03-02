@@ -1,7 +1,7 @@
 import datetime
 import os
 import shutil
-
+from django.db.models import Sum
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from .models import Folder, User, UserStorage,File
@@ -190,9 +190,8 @@ def delete_file(delete_files,username,saved_path):
         name = file_name
         if("folder:" in name):
             is_folder = True
-            name = name.split(sep="folder:",maxsplit=1)[1]
-            for file in os.scandir(f'{settings.MEDIA_ROOT}/{sub_path}/{name}'):
-                file_size+=os.path.getsize(file)
+            name = file_name.split(sep='folder:',maxsplit=1)[1]
+            file_size = File.objects.filter(file_owner=username, file_path__startswith=f'{file_path}{name}/').aggregate(Sum('file_size'))
         else:
             file_size = fs.size(name)
         
