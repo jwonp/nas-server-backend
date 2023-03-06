@@ -164,7 +164,7 @@ class download_files(ProtectedResourceView):
             for file in file_list:
                 if (file.startswith('folder:')):
                     folder_name = file.split(sep='folder:', maxsplit=1)[1]
-                    for (path, dir, files) in os.walk(f'{settings.MEDIA_ROOT}/{username}/{path}/{folder_name}'):
+                    for (path, dir, files) in os.walk(f'{settings.MEDIA_ROOT}/{username}/{path}{root_slash}{folder_name}'):
                         for file in files:
                             sep_path = path.rsplit(
                                 sep=f'{settings.MEDIA_ROOT}/{username}/{path}{root_slash}', maxsplit=1)[1]
