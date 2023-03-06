@@ -167,7 +167,7 @@ CORS_ORIGIN_WHITELIST = [
 ]
 SESSION_COOKIE_HTTPONLY = True
 OAUTH2_PROVIDER = {
-    'ACCESS_TOKEN_EXPIRE_SECONDS': 60 * 0.05,
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 60 * 120,
     'ALLOWED_REDIRECT_URI_SCHEMES': ['https'],
     'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
 }
