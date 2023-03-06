@@ -13,7 +13,7 @@
 <div id="wrapper">
   <a
     id="back"
-    href="https://api.ikiningyou.com/users/o/authorize/?response_type=code&code_challenge={% get_env_var 'CODE_CHALLENGE' %}&code_challenge_method=S256&client_id={% get_env_var 'CLIENT_ID' %}&redirect_uri=https://www.ikiningyou.com/callback/"
+    href="https://api.ikiningyou.com/users/o/authorize/?response_type=code&code_challenge={% CODE_CHALLENGE %}&code_challenge_method=S256&client_id={% CLIENT_ID %}&redirect_uri=https://www.ikiningyou.com/callback/"
     >메인으로 이동</a
   >
 </div>
@@ -30,6 +30,6 @@
 <script>
   const back = document.getElementById("back");
 
-  back.click();
+  <!-- back.click(); -->
 </script>
 <!-- {% endblock %} -->
