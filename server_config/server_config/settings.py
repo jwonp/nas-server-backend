@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'test_rest_api',
     'users',
+    'server_config'
     # OAUTH2
     'oauth2_provider',
     'corsheaders',
