@@ -211,6 +211,8 @@ def delete_file(delete_files, username, saved_path):
             name = file_name.split(sep='folder:', maxsplit=1)[1]
             file_size = File.objects.filter(
                 file_owner=username, file_path__startswith=f'{file_path}{name}/').aggregate(Sum('file_size')).get('file_size__sum')
+            if file_size == None:
+                file_size = 0
         else:
             file_size = fs.size(name)
 
