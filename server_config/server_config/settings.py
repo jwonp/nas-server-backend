@@ -25,7 +25,7 @@ DATABASE_DATA = {
 }
 
 DEBUG = env('DEBUG')
-ADMIN_USER = env('ADMIN_USER'),
+ADMIN_USER = env('ADMIN_USER')
 
 CRYPTO_KEY = env('CRYPTO_KEY')
 
