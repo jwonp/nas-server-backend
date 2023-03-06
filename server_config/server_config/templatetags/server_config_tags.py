@@ -6,4 +6,5 @@ register = template.Library()
 
 @register.simple_tag
 def get_env_var(key):
+    return key
     return settings.AUTH_DATA.get(key)
