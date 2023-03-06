@@ -156,12 +156,9 @@ class download_files(ProtectedResourceView):
         path = convert_path(parse.unquote(body.get('path')))
         username = self.request.user.username
         file_list = body.get('file_list')
-        # sub_path
-        # if path is root path: username/
-        # else: username/a/b/c
-        sub_path = f'{username}/{path}'
+
         root_slash = root_path_slash(path)
-        os.chdir(f'{settings.MEDIA_ROOT}/{sub_path}{root_slash}')
+        os.chdir(f'{settings.MEDIA_ROOT}/{username}/{path}{root_slash}')
         fs = FileSystemStorage(location=f'{settings.MEDIA_ROOT}/temp')
         with zipfile.ZipFile(f'{settings.MEDIA_ROOT}/temp/{username}.zip', 'w') as file_list_zip:
             for file in file_list:
@@ -169,8 +166,10 @@ class download_files(ProtectedResourceView):
                     folder_name = file.split(sep='folder:', maxsplit=1)[1]
                     for (path, dir, files) in os.walk(f'{settings.MEDIA_ROOT}/{username}/{path}/{folder_name}'):
                         for file in files:
-                            file_list_zip.write(os.path.join(
-                                path, file), compress_type=zipfile.ZIP_DEFLATED)
+                            sep_path = path.rsplit(
+                                sep=f'{settings.MEDIA_ROOT}/{username}/{path}/', maxsplit=1)[1]
+                            file_list_zip.write(
+                                f'{sep_path}/{file}', compress_type=zipfile.ZIP_DEFLATED)
                 else:
                     file_list_zip.write(f'{file}')
             file_list_zip.close()
