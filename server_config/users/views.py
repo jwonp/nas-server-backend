@@ -153,21 +153,21 @@ class add_folder(ProtectedResourceView):
 class download_files(ProtectedResourceView):
     def post(self, request, *args, **kwargs):
         body = json.loads(request.body)
-        path = convert_path(parse.unquote(body.get('path')))
+        file_path = convert_path(parse.unquote(body.get('path')))
         username = self.request.user.username
         file_list = body.get('file_list')
 
-        root_slash = root_path_slash(path)
-        os.chdir(f'{settings.MEDIA_ROOT}/{username}/{path}{root_slash}')
+        root_slash = root_path_slash(file_path)
+        os.chdir(f'{settings.MEDIA_ROOT}/{username}/{file_path}{root_slash}')
         fs = FileSystemStorage(location=f'{settings.MEDIA_ROOT}/temp')
         with zipfile.ZipFile(f'{settings.MEDIA_ROOT}/temp/{username}.zip', 'w') as file_list_zip:
             for file in file_list:
                 if (file.startswith('folder:')):
                     folder_name = file.split(sep='folder:', maxsplit=1)[1]
-                    for (path, dir, files) in os.walk(f'{settings.MEDIA_ROOT}/{username}/{path}{root_slash}{folder_name}'):
+                    for (path, dir, files) in os.walk(f'{settings.MEDIA_ROOT}/{username}/{file_path}{root_slash}{folder_name}'):
                         for file in files:
                             sep_path = path.rsplit(
-                                sep=f'{settings.MEDIA_ROOT}/{username}/{path}{root_slash}', maxsplit=1)[1]
+                                sep=f'{settings.MEDIA_ROOT}/{username}/{file_path}{root_slash}', maxsplit=1)[1]
                             file_list_zip.write(
                                 f'{sep_path}/{file}', compress_type=zipfile.ZIP_DEFLATED)
                 else:
