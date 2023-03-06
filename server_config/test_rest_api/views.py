@@ -30,10 +30,10 @@ def register(request):
 
     is_save_user = save_user(regist_data)
     if (is_save_user):
-        HttpResponse(status=400)
+        HttpResponse(status=401)
 
     is_save_user_storage = save_user_storage(username)
     if (is_save_user_storage == False):
-        HttpResponse(status=400)
+        HttpResponse(status=401)
 
     return HttpResponse(status=200)
