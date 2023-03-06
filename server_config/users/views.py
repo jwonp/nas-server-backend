@@ -131,6 +131,8 @@ class add_folder(ProtectedResourceView):
         body = json.loads(request.body)
         path = convert_path(parse.unquote(body.get('path')))
         folder_name = parse.unquote(body.get('folder_name'))
+        if folder_name == "":
+            return HttpResponse(status=400)
         # if path is root: "" + "" + "/"
         # else : "/" + "a/b/c" + "/"
         root_slash = root_path_slash(path)
@@ -145,7 +147,7 @@ class add_folder(ProtectedResourceView):
         is_ok_folders = save_folder_in_folders_table(
             username=username, name=name, path=converted_path)
         print(f'{is_ok_files} and {is_ok_folders}')
-        return HttpResponse("")
+        return HttpResponse(status=200)
 
 
 class download_files(ProtectedResourceView):
