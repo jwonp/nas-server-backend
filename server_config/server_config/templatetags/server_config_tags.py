@@ -5,5 +5,10 @@ register = template.Library()
 
 
 @register.simple_tag
-def get_env_var(key):
-    return settings.AUTH_DATA.get(key.upper())
+def get_code_challenge():
+    return settings.AUTH_DATA.get("CODE_CHALLENGE")
+
+
+@register.simple_tag
+def get_client_id():
+    return settings.AUTH_DATA.get("CLIENT_ID")
