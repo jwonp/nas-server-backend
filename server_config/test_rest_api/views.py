@@ -22,10 +22,19 @@ def getUser(request):
 @api_view(['POST'])
 def register(request):
     user_count = len(User.objects.all())
+
     if user_count > 8:
-        return HttpResponse(user_count, status=200)
-    data = request.data
-    username = data.get('user_id')
-    save_user(data)
-    is_done = save_user_storage(username)
-    return HttpResponse(is_done, status=200)
+        return HttpResponse(user_count, status=400)
+
+    regist_data = request.data
+    username = regist_data.get('user_id')
+
+    is_save_user = save_user(regist_data)
+    if (is_save_user):
+        HttpResponse(status=400)
+
+    is_save_user_storage = save_user_storage(username)
+    if (is_save_user_storage == False):
+        HttpResponse(status=400)
+
+    return HttpResponse(status=200)
