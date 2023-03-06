@@ -30,7 +30,7 @@ class check_admin(ProtectedResourceView):
     def get(self, request, *args, **kwargs):
         username = self.request.user.username
         if username != settings.ADMIN_USER:
-            return HttpResponse(status=400)
+            return HttpResponse(f'{username},{settings.ADMIN_USER:}', status=400)
         return HttpResponse(status=200)
 
 
