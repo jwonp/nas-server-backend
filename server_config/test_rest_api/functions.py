@@ -5,7 +5,6 @@ from users.serializers import UserStorageSerializer
 
 
 def save_user(data):
-
     user_id = data.get('user_id')
     password = data.get('user_password')
     email = data.get('user_email')
@@ -42,3 +41,11 @@ def save_user_storage(username):
     else:
         print("fail save_user_storage")
     return checker
+
+# regist_data = {
+# 	"user_id": ...,
+#     "user_password": ...,
+#     "user_email": ...,
+#     "user_last_name": ...,
+#     "user_first_name": ...
+# }

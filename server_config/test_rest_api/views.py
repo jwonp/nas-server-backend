@@ -1,3 +1,5 @@
+import os
+from django.conf import settings
 from django.http.response import HttpResponse
 
 from rest_framework.response import Response
@@ -35,5 +37,5 @@ def register(request):
     is_save_user_storage = save_user_storage(username)
     if (is_save_user_storage == False):
         HttpResponse(status=401)
-
+    os.mkdir(f'{settings.MEDIA_ROOT}/{username}')
     return HttpResponse(status=200)
