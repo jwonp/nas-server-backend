@@ -167,7 +167,7 @@ class download_files(ProtectedResourceView):
                     for (path, dir, files) in os.walk(f'{settings.MEDIA_ROOT}/{username}/{path}/{folder_name}'):
                         for file in files:
                             sep_path = path.rsplit(
-                                sep=f'{settings.MEDIA_ROOT}/{username}/{path}/', maxsplit=1)[1]
+                                sep=f'{settings.MEDIA_ROOT}/{username}/{path}{root_slash}', maxsplit=1)[1]
                             file_list_zip.write(
                                 f'{sep_path}/{file}', compress_type=zipfile.ZIP_DEFLATED)
                 else:
