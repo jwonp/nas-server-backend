@@ -14,7 +14,7 @@ def save_user(data):
 
     regex = re.compile(r'[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+')
 
-    if user_id == "" or password == "" or re.fullmatch(regex, email):
+    if user_id == "" or password == "" or re.fullmatch(regex, email) == False:
         return False
 
     user = User.objects.create_user(
