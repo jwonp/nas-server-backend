@@ -9,8 +9,13 @@
   %}
 </p>
 <p><a href="{% url 'admin:index' %}">{% translate 'Log in again' %}</a></p> -->
+{% load env_extras %}
 <div id="wrapper">
-  <a id="back" href="https://www.ikiningyou.com/">메인으로 이동</a>
+  <a
+    id="back"
+    href="https://api.ikiningyou.com/users/o/authorize/?response_type=code&code_challenge={% get_env_var 'CODE_CHALLENGE' %}&code_challenge_method=S256&client_id={% get_env_var 'CLIENT_ID' %}&redirect_uri=https://www.ikiningyou.com/callback/"
+    >메인으로 이동</a
+  >
 </div>
 <style>
   #wrapper {
@@ -24,6 +29,7 @@
 </style>
 <script>
   const back = document.getElementById("back");
+
   back.click();
 </script>
 <!-- {% endblock %} -->

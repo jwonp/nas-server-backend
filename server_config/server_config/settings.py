@@ -13,7 +13,8 @@ environ.Env.read_env(
 AUTH_DATA = {
     "CLIENT_ID": env('CLIENT_ID'),
     "CLIENT_SECRET": env('CLIENT_SECRET'),
-    "CODE_VERIFIER": env('CODE_VERIFIER')
+    "CODE_VERIFIER": env('CODE_VERIFIER'),
+    "CODE_CHALLENGE": env('CODE_CHALLENGE')
 }
 DATABASE_DATA = {
     "ENGINE": env('DB_ENGINE'),
