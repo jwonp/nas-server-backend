@@ -9,7 +9,9 @@
   %}
 </p>
 <p><a href="{% url 'admin:index' %}">{% translate 'Log in again' %}</a></p> -->
-<div id="wrapper"></div>
+<div id="wrapper">
+  <a id="back" href="https://www.ikiningyou.com/">메인으로 이동</a>
+</div>
 <style>
   #wrapper {
     top: 0;
@@ -21,6 +23,7 @@
   }
 </style>
 <script>
-  window.location.href = "https://www.ikiningyou.com/";
+  const back = document.getElementById("back");
+  back.click();
 </script>
 <!-- {% endblock %} -->
